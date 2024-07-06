@@ -3,8 +3,10 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Home from './pages/Home';
 import Error from './pages/Error';
 import Register from './pages/Register';
-import Dashboard from './dashboard/Dashboard';
+import AdminDashboard from './dashboard/AdminDashboard';
 import Login from './pages/Login';
+import Contact from './components/Contact';
+import UserDashboard from './dashboard/UserDashboard';
 
 const App: React.FC = () => {
   const router = createBrowserRouter([
@@ -24,10 +26,20 @@ const App: React.FC = () => {
       errorElement: <Error />,
     },
     {
-      path: 'dashboard',
-      element: <Dashboard />,
+      path: 'admin-dashboard',
+      element: <AdminDashboard />,
       errorElement: <Error />,
-    }
+    },
+    {
+      path: 'user-dashboard',
+      element: <UserDashboard />,
+      errorElement: <Error />,
+    },
+    {
+      path: 'contact',
+      element: <Contact />,
+      errorElement: <Error />,
+    },
   ]);
 
   return (
