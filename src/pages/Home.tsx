@@ -1,13 +1,18 @@
-import Container  from '../components/Container'
+import Hero  from '../components/Hero'
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
-
+import About from '../components/About'
+import Testimonial from '../components/Testimonial'
+import Contact from '../components/Contact'
 
 const Home = () => {
   return (
     <div>
       <Navbar />
-      < Container/>
+      <Hero />
+      <About/>
+      <Testimonial/>
+      <Contact/>
       <Footer/>
     </div>
   )

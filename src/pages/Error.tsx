@@ -8,7 +8,7 @@ const error : any = useRouteError()
   return (
     <div className="py-20  bg:base-100">
     <div className="text-center">
-        <p className="text-base font-semibold text-red-500">404</p>
+        <p className="text-base font-semibold text-red-500">ERROR</p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight text-green-300 sm:text-5xl">
             Page not found
         </h1>
@@ -21,7 +21,7 @@ const error : any = useRouteError()
         <div className="mt-4 flex items-center justify-center gap-x-3">
             <Link to="/" className="inline-flex items-center btn btn-sm btn-info text-sm font-semibold"><ArrowLeft size={16} className="mr-2" />Go back
             </Link>
-            <Link to="/" className="rounded-md btn btn-primary btn-sm  text-sm font-semibold"> Contact us
+            <Link to="/contact" className="rounded-md btn btn-primary btn-sm  text-sm font-semibold"> Contact us
             </Link>
         </div>
     </div>
