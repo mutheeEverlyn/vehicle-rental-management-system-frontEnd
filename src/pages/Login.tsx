@@ -1,52 +1,83 @@
-import { Link} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
-import { useState } from "react";
+import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import * as yup from 'yup';
+
+// Define types for form data and error messages
+type FormData = {
+  email: string;
+  password: string;
+};
+
+type FormErrors = {
+  email?: string;
+  password?: string;
+};
+
 const Login = () => {
-  const [error,setError]=useState('')
-  const[formData,setFormData]=useState({email:'',password:''});
-  const [isLogin,setIsLogin]=useState(false);
-  const validateForm=yup.object().shape({
-    email:yup.string().required('email required').email('valid email required'),
-    password:yup.string().required('password required').min(8,'invalid password').max(10,'invalid password')
-  })
-  const handleChange =(e:any)=>{
+  const [error, setError] = useState<FormErrors>({});
+  const [formData, setFormData] = useState<FormData>({ email: '', password: '' });
+  const [isLogin, setIsLogin] = useState(false);
+  const navigate = useNavigate();
+
+  // Reset form state and login status when component mounts
+  useEffect(() => {
+    setFormData({ email: '', password: '' });
+    setError({});
+    setIsLogin(false);
+  }, []);
+
+  // Define schema for form validation using yup
+  const validateForm = yup.object().shape({
+    email: yup.string().required('Email is required').email('A valid email is required'),
+    password: yup.string().required('Password is required').min(8, 'Password must be at least 8 characters').max(10, 'Password must be at most 10 characters')
+  });
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  }
-  const handleLogin=async (e:any)=>{
+  };
+
+  const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      await validateForm.validate(formData, { abortEarly: false });//abortEarly aborts once the first error is found hence should be false to complete checking for the other fields
-      console.log('login successfull', formData);
-      setError('');
-      setIsLogin(true); 
+      await validateForm.validate(formData, { abortEarly: false });
+      console.log('Login successful', formData);
+      setError({});
+      setIsLogin(true);
+      navigate('/userDashboard'); // Navigate to userDashboard upon successful login
     } catch (err: any) {
-      setError(err.errors[0]);
-      setIsLogin(false); 
+      const validationErrors: FormErrors = {};
+      err.inner.forEach((error: yup.ValidationError) => {
+        validationErrors[error.path as keyof FormData] = error.message;
+      });
+      setError(validationErrors);
+      setIsLogin(false);
     }
+  };
 
-  }
   return (
     <>
-    <div className="m-auto flex flex-col container min-h-[620px]">
-    <h1 className="font-bold text-3xl m-auto">Login to Juneva car rentals </h1>
-  <form onSubmit={handleLogin} className=" flex flex-col gap-5 my-10 mx-auto w-2/3 border-blue-400 rounded-md border-2 p-10">
-  <label htmlFor="email">Enter Your email</label>
-  {error && <p className='error-message'>{error}</p>}
-    <input type="email" name="email" onChange={handleChange} placeholder="example@gmail.com"  className="border-2 border-black rounded-md p-2 {error ? 'error': ''}"/>
-    <label htmlFor="password">Enter Your password</label>
-    {error && <p className='error-message'>{error}</p>}
-    <input type="password"  onChange={handleChange} placeholder="**********" className="border-2 border-black rounded-md p-2"/>
-    {isLogin?(
-    <button type="submit"  className="rounded-md  bg-blue-400  p-2"><Link to='/userDashboard'>Login</Link></button>
-    ):(
-    <button type="submit" className="rounded-md  bg-blue-400 p-2"><Link to='/'>Go Back</Link></button>
-    )}
-  </form>
-</div>
- <Footer />
- </>
-  )
+      <div className="m-auto flex flex-col container min-h-[620px]">
+        <h1 className="font-bold text-3xl m-auto">Login to Juneva car rentals</h1>
+        <form onSubmit={handleLogin} className="flex flex-col gap-5 my-10 mx-auto w-2/3 border-blue-400 rounded-md border-2 p-10">
+          <label htmlFor="email">Enter Your email</label>
+          {error.email && <p className='text-red-600'>{error.email}</p>}
+          <input type="email" name="email" onChange={handleChange} value={formData.email} placeholder="example@gmail.com" className="border-2 border-black rounded-md p-2" />
+
+          <label htmlFor="password">Enter Your password</label>
+          {error.password && <p className='text-red-600'>{error.password}</p>}
+          <input type="password" name="password" onChange={handleChange} value={formData.password} placeholder="**********" className="border-2 border-black rounded-md p-2" />
+
+          <button type="submit" className="rounded-md bg-blue-400 p-2">Login</button>
+          <button type="button" className="rounded-md bg-blue-400 p-2">
+            <Link to='/'>Go Back</Link>
+          </button>
+        </form>
+        {isLogin && <p className="text-green-600">You are logged in!</p>}
+      </div>
+      <Footer />
+    </>
+  );
 }
 
-export default Login
+export default Login;
