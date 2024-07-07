@@ -26,12 +26,12 @@ const App: React.FC = () => {
       errorElement: <Error />,
     },
     {
-      path: 'admin-dashboard',
+      path: 'adminDashboard',
       element: <AdminDashboard />,
       errorElement: <Error />,
     },
     {
-      path: 'user-dashboard',
+      path: 'userDashboard',
       element: <UserDashboard />,
       errorElement: <Error />,
     },
