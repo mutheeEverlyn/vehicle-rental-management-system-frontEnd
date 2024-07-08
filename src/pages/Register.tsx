@@ -3,7 +3,6 @@ import * as yup from 'yup';
 import { Link, useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 
-// Define types for form data and error messages
 type FormData = {
   full_name: string;
   email: string;
@@ -22,7 +21,7 @@ const Register = () => {
   const [isRegistered, setIsRegistered] = useState(false);
   const navigate = useNavigate();
 
-  // Define schema for form validation using yup
+  //  form validation using yup
   const validateForm = yup.object().shape({
     full_name: yup.string().required('Full name is required'),
     email: yup.string().required('Email is required').email('A valid email is required'),
