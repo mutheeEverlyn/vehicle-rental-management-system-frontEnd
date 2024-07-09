@@ -5,7 +5,7 @@
 
 
 import yellowCar from "../assets/banner-car.png";
-
+import { Link } from "react-router-dom";
 const Hero = ()=> {
   
   return (
@@ -33,8 +33,8 @@ const Hero = ()=> {
                 
               }}
               className="rounded-md bg-blue-400 hover:bg-primary/80 transition duration-500 py-2 px-6 text-black"
-            >
-              Get Started
+            ><Link to='/register'>
+              Get Started</Link>
             </button>
           </div>
         </div>
