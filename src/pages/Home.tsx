@@ -4,6 +4,8 @@ import Footer from "../components/Footer"
 import About from '../components/About'
 import Testimonial from '../components/Testimonial'
 import Contact from '../components/Contact'
+import CarList from '../components/CarList'
+import Services from '../components/Services'
 
 const Home = () => {
   return (
@@ -11,6 +13,8 @@ const Home = () => {
       <Navbar />
       <Hero />
       <About/>
+      <CarList/>
+      <Services/>
       <Testimonial/>
       <Contact/>
       <Footer/>
