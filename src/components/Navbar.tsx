@@ -11,15 +11,15 @@ const Navbar = () => {
     setShowMenu(!showMenu);
   };
   return (
-    <div className='flex gap-5 bg-black text-white  p-5 w-full max-w-full '>
+    <div className='flex gap-5 bg-black text-white  p-5 w-full  relative z-10 shadow-md duration-300'>
       <div className='w-40 md:w-56'><img src={logo} width={300} alt="logo"/></div>
       <nav className='hidden  md:flex md:justify-between md:gap-10  ml-auto '>
       <ul className='flex   gap-5 items-center '>
-        <li><button><Link to='/' className='hover:underline'>HOME</Link></button></li>
-        <li><button><Link to='/about'  className='hover:underline'>ABOUT US</Link></button></li>
-        <li><button><Link to='/listing'  className='hover:underline'>CAR LISTING</Link></button></li>
-        <li><button><Link to='/services'  className='hover:underline'>SERVICES</Link></button></li>
-        <li><button><Link to='/contact'  className='hover:underline'>CONTACT US</Link></button></li>
+        <li><button><Link to='/' className='hover:border-b-2 hover:text-blue-400'>HOME</Link></button></li>
+        <li><button><Link to='/about'  className='hover:border-b-2 hover:text-blue-400'>ABOUT US</Link></button></li>
+        <li><button><Link to='/listing'  className='hover:border-b-2 hover:text-blue-400'>CAR LISTING</Link></button></li>
+        <li><button><Link to='/services'  className='hover:border-b-2 hover:text-blue-400'>SERVICES</Link></button></li>
+        <li><button><Link to='/contact'  className='hover:border-b-2 hover:text-blue-400'>CONTACT US</Link></button></li>
       </ul>
       <div className='flex gap-5 items-center '>
       <button className=' bg-blue-400  hover:bg-primary/80 transition duration-500 rounded-md w-20 h-10 my-10'><Link to='/login'> LOGIN</Link></button>
