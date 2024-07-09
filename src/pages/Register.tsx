@@ -73,13 +73,15 @@ const Register = () => {
             <option value="admin">admin</option>
             <option value="userAdminRoleAuth">userAdminRoleAuth</option>
           </select> */}
-          <p>Admin? <Link to='/RegisterAdmin'>Register here</Link></p>
+          
           
           <button type="submit" className="rounded-md bg-blue-400 p-2">Register</button>
           
           <button type="button" className="rounded-md bg-blue-400 p-2">
             <Link to='/'>Go Back</Link>
           </button>
+          <p>Already registered? <Link to='/login' className="text-blue-400">LOGIN</Link></p>
+          <p>Admin? <Link to='/login'  className="text-blue-400">login here</Link></p>
         </form>
       </div>
       <Footer />
