@@ -3,7 +3,13 @@ import { useGetFleetQuery, useDeleteFleetMutation } from './FleetAPI';
 import { Toaster, toast } from 'sonner';
 import { Tfleet } from './FleetAPI';
 const Fleet: React.FC = () => {
-  const { data, error, isLoading, isError } = useGetFleetQuery();
+  const userDetails = JSON.parse(localStorage.getItem('userDetails') || '{}');
+  const token = userDetails?.token;
+  const { data, error, isLoading, isError } = useGetFleetQuery(undefined, {   headers: {
+    'Authorization': `Bearer ${token}`
+  }
+});
+console.log(data)
   const [deletefleet, {  data: deleteMsg }] = useDeleteFleetMutation();
 
   const handleDelete = async (fleet_id: number) => {
@@ -29,7 +35,6 @@ const Fleet: React.FC = () => {
           <thead>
             <tr>
               <th className='text-white'>fleet_id</th>
-              <th className='text-white'>vehicle_id</th>
               <th className='text-white'>acquisition date</th>
               <th className='text-white'>depreciation rate</th>
               <th className='text-white'>current value</th>
@@ -37,6 +42,12 @@ const Fleet: React.FC = () => {
               <th className='text-white'>status</th>
               <th className='text-white'>created_at</th>
               <th className='text-white'>updated_at</th>
+              <th className='text-white'>availability</th>
+              <th className='text-white'>created_at</th>
+              <th className='text-white'>updated_at</th>
+              <th className='text-white'>rental_rate</th>
+              <th className='text-white'>vehicle_id</th>
+              <th className='text-white'>vehicleSpec_id</th>
               <th className='text-white'>Options</th>
             </tr>
           </thead>
@@ -50,7 +61,6 @@ const Fleet: React.FC = () => {
                 data && data.map((fleet:Tfleet, index:number) => (
                   <tr key={index}>
                     <th>{fleet.fleet_id}</th>
-                    <td>{fleet.vehicle_id}</td>
                     <td>{fleet.acquisition_date}</td>
                     <td>{fleet.depreciation_rate}</td>
                     <td>{fleet.current_value}</td>
@@ -58,6 +68,12 @@ const Fleet: React.FC = () => {
                     <th>{fleet.status}</th>
                     <td>{fleet.created_at}</td>
                     <td>{fleet.updated_at}</td>
+                    <td>{fleet.vehicle.availability}</td>
+                    <td>{fleet.vehicle.created_at}</td>
+                    <td>{fleet.vehicle.updated_at}</td>
+                    <td>{fleet.vehicle.rental_rate}</td>
+                    <td>{fleet.vehicle.vehicle_id}</td>
+                    <td>{fleet.vehicle.vehicleSpec_id}</td>
                     <td className='flex gap-2'>
                       <button className='btn btn-sm btn-outline btn-info'>update</button>
                       <button className='btn btn-sm btn-outline btn-warning' onClick={() => handleDelete(fleet.fleet_id)}>Delete</button>
