@@ -1,7 +1,7 @@
 import React from 'react';
-import { useGetCustomerSupportQuery, useDeleteCustomerSupportMutation } from './CustomerSuppportAPI';
+import { useGetCustomerSupportQuery, useDeleteCustomerSupportMutation } from './CustomerSupportAPI';
 import { Toaster, toast } from 'sonner';
-import { TcustomerSupport } from './CustomerSuppportAPI';
+import { TcustomerSupport } from './CustomerSupportAPI';
 const CustomerSupport: React.FC = () => {
   const userDetails = JSON.parse(localStorage.getItem('userDetails') || '{}');
   const token = userDetails?.token;
