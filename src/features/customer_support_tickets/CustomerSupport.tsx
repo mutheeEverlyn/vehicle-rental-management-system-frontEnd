@@ -81,7 +81,7 @@ const CustomerSupport: React.FC = () => {
             )}
           </tbody>
           <tfoot>
-            <tr><td colSpan={6}>{data ? `${data.length} records` : '0 records'}</td></tr>
+            <tr><td className='text-white' colSpan={6}>{data ? `${data.length} records` : '0 records'}</td></tr>
           </tfoot>
         </table>
       </div>
