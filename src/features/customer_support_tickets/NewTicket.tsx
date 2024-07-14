@@ -1,17 +1,24 @@
 import React, { useState } from "react";
-import { useCreateTicketMutation, useUpdateTicketMutation, useGetTicketQuery } from "./TicketApi";
+import { useCreateCustomerSupportTicketsMutation, useUpdateCustomerSupportTicketsMutation, useGetCustomerSupportTicketsQuery } from "./TicketApi";
 import { Toaster, toast } from 'sonner';
 import { Tticket } from "./TicketApi";
 
 const NewTicket: React.FC = () => {
-  const { data, error, isLoading, isError } = useGetTicketQuery();
-  const [updateTicket] = useUpdateTicketMutation();
-  const [createTicket] = useCreateTicketMutation();
+  const userDetails = localStorage.getItem('userDetails');
+  if (!userDetails) {
+    return <div>Error: No data.</div>;
+  }
+
+  const parsedUserDetails = JSON.parse(userDetails);
+  const user_id = parsedUserDetails.user_id;
+  const { data, error, isLoading, isError } = useGetCustomerSupportTicketsQuery();
+  const [updateTicket] = useUpdateCustomerSupportTicketsMutation();
+  const [createTicket] = useCreateCustomerSupportTicketsMutation(user_id);
 
   const [subject, setSubject] = useState('');
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState('');
-  const handleCreateTicket = async (e: React.FormEvent) => {
+  const handleCreateTicket = (e: React.FormEvent) => {
     e.preventDefault();
 
     const newTicket = {
@@ -24,8 +31,10 @@ const NewTicket: React.FC = () => {
     };
 
     try {
-      await createTicket(newTicket).unwrap();
+       createTicket(newTicket).unwrap();
+       console.log(localStorage)
       console.log(newTicket)
+      console.log(data)
       toast.success('Ticket created successfully');
       setSubject('');
       setDescription('');
@@ -99,6 +108,7 @@ const NewTicket: React.FC = () => {
           <thead>
             <tr>
               <th className='text-white'>ticket_id</th>
+              <th className='text-white'>user_id</th>
               <th className='text-white'>subject</th>
               <th className='text-white'>description</th>
               <th className='text-white'>status</th>
@@ -117,6 +127,7 @@ const NewTicket: React.FC = () => {
                 data && data.map((ticket: Tticket, index: number) => (
                   <tr key={index}>
                     <th>{ticket.ticket_id}</th>
+                    <th>{ticket.user_id}</th>
                     <td>{ticket.subject}</td>
                     <td>{ticket.description}</td>
                     <td>{ticket.status}</td>
@@ -131,7 +142,7 @@ const NewTicket: React.FC = () => {
             )}
           </tbody>
           <tfoot>
-            <tr><td colSpan={7}>{data ? `${data.length} records` : '0 records'}</td></tr>
+            <tr><td className='text-white' colSpan={7}>{data ? `${data.length} records` : '0 records'}</td></tr>
           </tfoot>
         </table>
       </div>
