@@ -10,7 +10,18 @@ import { ClipboardPlus } from 'lucide-react';
 import { UserRoundCog } from 'lucide-react';
 import { CarFront } from 'lucide-react';
 import { LayoutDashboard } from 'lucide-react';
+import { useGetUserByIdQuery } from '../features/users_management/UsersApi';
 const AdminDashboard = () => {
+  const userDetails = localStorage.getItem('userDetails');
+  if (!userDetails) {
+    return <div>Error: No user is logged in.</div>;
+  }
+
+  const parsedUserDetails = JSON.parse(userDetails);
+  const user_id = parsedUserDetails.user_id;
+  const { data, error, isLoading } = useGetUserByIdQuery(user_id);
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.toString()}</div>;
   return (
     <>
     <div className="bg-black h-16 flex items-center  px-4">
@@ -26,7 +37,7 @@ const AdminDashboard = () => {
       <div className="flex items-center justify-start gap-3 pb-3">
           <MdAdminPanelSettings size={50} />
           <div>
-            <h1 className="pt-2">Hello Admin</h1>
+            <h1 className="pt-2">Welcome {data.full_name}</h1>
           </div>
         </div>
         <ul>
