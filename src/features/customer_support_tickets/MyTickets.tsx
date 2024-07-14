@@ -1,11 +1,17 @@
 import React from 'react';
-import { useGetTicketQuery, useDeleteCustomerSupportTicketsMutation,useUpdateTicketMutation } from './TicketApi';
+import { useGetCustomerSupportTicketsByIdQuery, useDeleteCustomerSupportTicketsMutation,useUpdateCustomerSupportTicketsMutation } from './TicketApi';
 import { Toaster, toast } from 'sonner';
 import { Tticket } from './TicketApi';
 const MyTickets: React.FC = () => {
-  const user_id=parseInt(localStorage.getItem('user_id')|| '0',10);
-  const { data, error, isLoading, isError } = useGetTicketQuery(user_id);
-  const[updateTicket]=useUpdateTicketMutation();
+  const userDetails = localStorage.getItem('userDetails');
+  if (!userDetails) {
+    return <div>Error: No data.</div>;
+  }
+
+  const parsedUserDetails = JSON.parse(userDetails);
+  const user_id = parsedUserDetails.user_id;
+  const { data, error, isLoading, isError } = useGetCustomerSupportTicketsByIdQuery(user_id);
+  const[updateTicket]=useUpdateCustomerSupportTicketsMutation();
   const [deleteTicket, {  data: deleteMsg }] = useDeleteCustomerSupportTicketsMutation();
   const handleUpdate=(ticket_id:number)=>{
     const updateTicketData={
@@ -36,7 +42,7 @@ const MyTickets: React.FC = () => {
           <thead>
             <tr>
               <th className='text-white'>ticket_id</th>
-              {/* <th className='text-white'>user_id</th> */}
+              <th className='text-white'>user_id</th>
               <th className='text-white'>subject</th>
               <th className='text-white'>description</th>
               <th className='text-white'>status</th>
@@ -47,15 +53,15 @@ const MyTickets: React.FC = () => {
           </thead>
           <tbody>
             {isLoading ? (
-              <tr><td colSpan={6}>Loading...</td></tr>
+              <tr><td colSpan={7}>Loading...</td></tr>
             ) : (
               isError ? (
-                <tr><td colSpan={6}>Error: {error?.data?.message || 'An error occurred'}</td></tr>
+                <tr><td colSpan={7}>Error: {error?.data?.message || 'An error occurred'}</td></tr>
               ) : (
                 data && data.map((ticket:Tticket, index:number) => (
                   <tr key={index}>
-                    <th>{ticket.ticket_id}</th>
-                    {/* <td>{ticket.user_id}</td> */}
+                    <td>{ticket.ticket_id}</td>
+                    <td>{ticket.user_id}</td>
                     <td>{ticket.subject}</td>
                     <td>{ticket.description}</td>
                     <td>{ticket.status}</td>
@@ -71,7 +77,7 @@ const MyTickets: React.FC = () => {
             )}
           </tbody>
           <tfoot>
-            <tr><td colSpan={6}>{data ? `${data.length} records` : '0 records'}</td></tr>
+            <tr><td className='text-white' colSpan={7}>{data ? `${data.length} records` : '0 records'}</td></tr>
           </tfoot>
         </table>
       </div>
