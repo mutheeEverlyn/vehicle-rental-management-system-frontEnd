@@ -2,19 +2,26 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export interface Tfleet{
     fleet_id:number;
-    vehicle_id:number;
     acquisition_date:string;
     depreciation_rate:number;
     current_value:number;
     maintenance_cost:number;
     status:string;
     created_at:string;
-    updated_at:string
+    updated_at:string;
+    vehicle:{
+      availability:string;
+      created_at:string;
+      updated_at:string;
+      rental_rate:number;
+      vehicle_id:number;
+      vehicleSpec_id:number;
+    }
   }
 
 // Define the API slice
 export const FleetAPI = createApi({
-  reducerPath: 'fleetAPI',
+  reducerPath: 'FleetAPI',
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://localhost:8000',
     prepareHeaders: (headers) => {
@@ -28,19 +35,19 @@ export const FleetAPI = createApi({
       return headers;
     },
   }),
-  tagTypes: ['fleetManagement'],
+  tagTypes: ['fleetManagementData'],
   endpoints: (builder) => ({
     getFleet: builder.query<Tfleet[], void>({
-      query: () => 'fleetManagement',
-      providesTags: ['fleetManagement'],
+      query: () => 'fleetManagementData',
+      providesTags: ['fleetManagementData'],
     }),
     createFleet: builder.mutation<Tfleet, Partial<Tfleet>>({
-      query: (newFleetManagement) => ({
+      query: (newFleetManagementData) => ({
         url: 'fleetManagement',
         method: 'POST',
-        body: newFleetManagement,
+        body: newFleetManagementData,
       }),
-      invalidatesTags: ['fleetManagement'],
+      invalidatesTags: ['fleetManagementData'],
     }),
     updateFleet: builder.mutation<Tfleet, Partial<Tfleet>>({
       query: ({ fleet_id, ...rest }) => ({
@@ -48,14 +55,14 @@ export const FleetAPI = createApi({
         method: 'PUT',
         body: rest,
       }),
-      invalidatesTags: ['fleetManagement'],
+      invalidatesTags: ['fleetManagementData'],
     }),
     deleteFleet: builder.mutation<{ success: boolean; fleet_id: number }, number>({
       query: (fleet_id) => ({
         url: `fleetManagement/${fleet_id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['fleetManagement'],
+      invalidatesTags: ['fleetManagementData'],
     }),
   }),
 });
