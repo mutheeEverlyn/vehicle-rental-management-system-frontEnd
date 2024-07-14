@@ -12,7 +12,7 @@ export interface Tticket{
 
 // Define the API slice
 export const TicketAPI = createApi({
-  reducerPath: 'TicketAPI',
+  reducerPath: 'ticketAPI',
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://localhost:8000',
     prepareHeaders: (headers) => {
@@ -28,11 +28,15 @@ export const TicketAPI = createApi({
   }),
   tagTypes: ['customerSupportTickets'],
   endpoints: (builder) => ({
-    getTicket: builder.query<Tticket[], void>({
+    getCustomerSupportTicketsById:builder.query<Tticket,number>({
+      query:(user_id)=>`customerSupportTickets/${user_id}`,
+      providesTags:['customerSupportTickets'],
+    }),
+    getCustomerSupportTickets: builder.query<Tticket[], void>({
       query: () => 'customerSupportTickets',
       providesTags: ['customerSupportTickets'],
     }),
-    createTicket: builder.mutation<Tticket, Partial<Tticket>>({
+    createCustomerSupportTickets: builder.mutation<Tticket, Partial<Tticket>>({
       query: (newCustomerSupportTickets) => ({
         url: 'customerSupportTickets',
         method: 'POST',
@@ -40,7 +44,7 @@ export const TicketAPI = createApi({
       }),
       invalidatesTags: ['customerSupportTickets'],
     }),
-    updateTicket: builder.mutation<Tticket, Partial<Tticket>>({
+    updateCustomerSupportTickets: builder.mutation<Tticket, Partial<Tticket>>({
       query: ({ ticket_id, ...rest }) => ({
         url: `customerSupportTickets/${ticket_id}`,
         method: 'PUT',
@@ -60,8 +64,9 @@ export const TicketAPI = createApi({
 
 // Export the auto-generated hooks
 export const {
-  useGetTicketQuery,
-  useCreateTicketMutation,
-  useUpdateTicketMutation,
+  useGetCustomerSupportTicketsByIdQuery,
+  useGetCustomerSupportTicketsQuery,
+  useCreateCustomerSupportTicketsMutation,
+  useUpdateCustomerSupportTicketsMutation,
   useDeleteCustomerSupportTicketsMutation,
 }:any = TicketAPI;
