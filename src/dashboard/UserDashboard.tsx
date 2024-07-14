@@ -8,7 +8,18 @@ import { Car } from 'lucide-react';
 import { CarFront } from 'lucide-react';
 import { TicketCheck } from 'lucide-react';
 import { TicketPlus } from 'lucide-react';
+import { useGetUserByIdQuery } from '../features/users_management/UsersApi';
 const UserDashboard: React.FC = () => {
+  const userDetails = localStorage.getItem('userDetails');
+  if (!userDetails) {
+    return <div>Error: No user is logged in.</div>;
+  }
+
+  const parsedUserDetails = JSON.parse(userDetails);
+  const user_id = parsedUserDetails.user_id;
+  const { data, error, isLoading } = useGetUserByIdQuery(user_id);
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.toString()}</div>;
   return (
     <>
     <div className="bg-black h-16 flex items-center  px-4">
@@ -24,7 +35,7 @@ const UserDashboard: React.FC = () => {
         <div className="flex items-center pb-3 justify-start gap-3">
           <FaUserCircle size={50} />
           <div>
-            <h1 className="pt-2  text-blue-400">Hello user</h1>
+            <h1 className="pt-2  text-blue-400">Welcome {data.full_name}</h1>
           </div>
         </div>
           <ul>
