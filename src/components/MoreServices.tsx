@@ -23,11 +23,11 @@ const serviceData = [
   ];
 const MoreServices = () => {
   return (
-    <div className=" py-14 sm:min-h-[600px] sm:grid sm:place-items-center">
+    <div className=" py-14 sm:min-h-[600px] sm:grid sm:place-items-center services" >
     <div className="container">
       <div className="pb-12">
         <h1
-          className="text-3xl font-semibold text-center sm:text-4xl font-serif"
+          className="text-3xl font-semibold text-center sm:text-4xl font-serif text-white"
         >
           Why Choose Us
         </h1>
