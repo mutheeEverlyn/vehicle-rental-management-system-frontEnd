@@ -1,9 +1,4 @@
 
-//         <p>call us for your next ride</p>
-//         <p>☎ 01000000765</p>
-
-
-
 import yellowCar from "../assets/banner-car.png";
 import { Link } from "react-router-dom";
 const Hero = ()=> {
