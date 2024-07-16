@@ -11,7 +11,7 @@ const Navbar = () => {
     setShowMenu(!showMenu);
   };
   return (
-    <div className='flex gap-10 bg-black text-white  p-5 w-full  relative  shadow-md duration-300 md:items-center justify-between  md:gap-0 '>
+    <div className='flex gap-10 bg-black text-white   w-full  relative  shadow-md duration-300 md:items-center justify-between  md:gap-0 '>
       <div className='w-40 lg:w-60 md:w-32 '><img src={logo} width={300} alt="logo"/></div>
       <nav className='hidden  md:flex md:justify-between md:gap-1   '>
       <ul className='flex   gap-5 items-center md:gap-3 '>
