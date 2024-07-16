@@ -33,7 +33,7 @@ const AdminDashboard = () => {
         
       </div> 
     <div className="flex">
-      <div className="w-1/4 bg-gray-800 h-screen p-4 text-white">
+      <div className="w-1/4 bg-gray-800  p-4 text-white">
       <div className="flex items-center justify-start gap-3 pb-3">
           <MdAdminPanelSettings size={50} />
           <div>
