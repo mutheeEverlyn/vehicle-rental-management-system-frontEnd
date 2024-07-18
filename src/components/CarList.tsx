@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import whiteCar from "../assets/white-car.png";
 import car2 from "../assets/car5.png";
 import car3 from "../assets/car6.png";
-
 const carList = [
   {
     name: "BMW UX",
@@ -26,7 +25,7 @@ const CarList = () => {
     <div className="pb-24">
       <div className="container">
         
-        <h1 className="text-3xl sm:text-4xl font-semibold font-serif mb-3" >some of the cars we have </h1>
+        <h1 className="text-3xl sm:text-4xl font-semibold font-serif mb-3 text-center" >some of the cars we have </h1>
         <div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-16">
             {carList.map((data) => (
