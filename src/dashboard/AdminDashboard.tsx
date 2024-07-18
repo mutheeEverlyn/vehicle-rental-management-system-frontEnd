@@ -32,8 +32,8 @@ const AdminDashboard = () => {
         </button>
         
       </div> 
-    <div className="flex">
-      <div className="w-1/4 bg-gray-800  p-4 text-white">
+    <div className="flex min-h-screen">
+      <div className="w-1/5 bg-gray-800  p-4 text-white">
       <div className="flex items-center justify-start gap-3 pb-3">
           <MdAdminPanelSettings size={50} />
           <div>
@@ -43,6 +43,7 @@ const AdminDashboard = () => {
         <ul>
           <li className="mb-2"><div className="flex items-center text-white"><LayoutDashboard className="text-white mr-2" /><Link to="">Dashboard</Link></div></li>
           <li className="mb-2"><div className="flex items-center text-white"><CarFront className="text-white mr-2"  /><Link to="vehicles">Manage Vehicles</Link></div></li>
+          <li className="mb-2"><div className="flex items-center text-white"><CarFront className="text-white mr-2"  /><Link to="book-vehicle">Vehicles List</Link></div></li>
           <li className="mb-2"><div className="flex items-center text-white"><UserRoundCog  className="text-white mr-2"  /><Link to="users">Manage Users</Link></div></li>
           <li className="mb-2"><div className="flex items-center text-white"> <ClipboardPlus  className="text-white mr-2" /><Link to="reports">Reports</Link></div></li>
           <li className="mb-2"><div className="flex items-center text-white"><MapPin  className="text-white mr-2" /><Link to="location">Location and Branches</Link></div></li>
