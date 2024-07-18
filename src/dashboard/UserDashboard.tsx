@@ -22,63 +22,24 @@ const UserDashboard: React.FC = () => {
     <>
       <div className="bg-black h-16 flex items-center px-4">
         <button type="submit" className="bg-blue-400 text-white hover:bg-primary/80 transition duration-500 rounded-md w-20 h-10 float-right ml-auto m-2">
-          <div className="flex items-center text-white">
-            <RiLogoutCircleLine className='text-white' />
-            <Link to='/'>Logout</Link>
-          </div>
+          <div className="flex items-center text-white"><RiLogoutCircleLine className='text-white' /><Link to='/'>Logout</Link> </div>
         </button>
       </div>
       <div className="flex">
-        <div className="w-1/4 bg-gray-800 p-4 text-white">
-          <div className="flex items-center pb-3 justify-start gap-3">
-            <FaUserCircle size={50} />
-            <div>
-              <h1 className="pt-2 text-blue-400">Welcome {data.full_name}</h1>
-            </div>
+        <div className="w-1/5 bg-gray-800 p-4 text-white">
+          <div className="flex items-center pb-3 justify-start gap-3"> <FaUserCircle size={50} />
+            <div><h1 className="pt-2 text-blue-400">Welcome {data.full_name}</h1> </div>
           </div>
           <ul>
-            <li className="mb-2">
-              <div className="flex items-center text-white">
-                <LayoutDashboard className="text-white mr-2" />
-                <Link to="">Dashboard</Link>
-              </div>
-            </li>
-            <li className="mb-2">
-              <div className="flex items-center text-white">
-                <Car className="text-white mr-2" />
-                <Link to="book-vehicle">Book a Vehicle</Link>
-              </div>
-            </li>
-            <li className="mb-2">
-              <div className="flex items-center text-white">
-                <CarFront className="text-white mr-2" />
-                <Link to="bookings">My bookings</Link>
-              </div>
-            </li>
-            <li className="mb-2">
-              <div className="flex items-center text-white">
-                <TicketCheck className="text-white mr-2" />
-                <Link to="my-tickets">My Tickets</Link>
-              </div>
-            </li>
-            <li className="mb-2">
-              <div className="flex items-center text-white">
-                <TicketPlus className="text-white mr-2" />
-                <Link to="new-ticket">New Ticket</Link>
-              </div>
-            </li>
-            <li className="mb-2">
-              <div className="flex items-center text-white">
-                <TicketPlus className="text-white mr-2" />
-                <Link to="profile">My profile</Link>
-              </div>
-            </li>
+            <li className="mb-2"><div className="flex items-center text-white"> <LayoutDashboard className="text-white mr-2" /><Link to="">Dashboard</Link> </div></li>
+            <li className="mb-2"><div className="flex items-center text-white"><Car className="text-white mr-2" /><Link to="book-vehicle">Book a Vehicle</Link></div> </li>
+            <li className="mb-2"><div className="flex items-center text-white"><CarFront className="text-white mr-2" /><Link to="bookings">My bookings</Link></div> </li>
+           <li className="mb-2"><div className="flex items-center text-white"><TicketCheck className="text-white mr-2" /> <Link to="my-tickets">My Tickets</Link></div></li>
+            <li className="mb-2"><div className="flex items-center text-white"><TicketPlus className="text-white mr-2" /><Link to="new-ticket">New Ticket</Link> </div></li>
+            <li className="mb-2"> <div className="flex items-center text-white"><FaUserCircle size={30} className="text-white mr-2" /> <Link to="profile">My profile</Link> </div></li>
           </ul>
         </div>
-        <div className="w-3/4 p-4">
-          <Outlet context={{ user_id }} /> {/* Pass user_id via context */}
-          <Footer />
-        </div>
+        <div className="w-3/4 p-4"><Outlet context={{ user_id }} /> {/* Pass user_id via context */}<Footer /> </div>
       </div>
     </>
   );
