@@ -19,9 +19,9 @@ const error : any = useRouteError()
             {error.statusText || error.message}
         </p>
         <div className="mt-4 flex items-center justify-center gap-x-3">
-            <Link to="/" className="inline-flex items-center btn btn-sm btn-info text-sm font-semibold"><ArrowLeft size={16} className="mr-2" />Go back
+            <Link to="/" className="inline-flex items-center btn btn-sm btn-info text-sm font-semibold"><ArrowLeft size={16} className="mr-2" />Home
             </Link>
-            <Link to="/contact" className="rounded-md btn btn-primary btn-sm  text-sm font-semibold"> Contact us
+            <Link to="/contactUs" className="rounded-md btn btn-primary btn-sm  text-sm font-semibold"> Contact us
             </Link>
         </div>
     </div>
