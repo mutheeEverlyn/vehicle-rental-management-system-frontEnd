@@ -17,14 +17,11 @@ const About = () => {
             <div className="space-y-5 sm:p-16 pb-6">
               <h1 className="text-3xl sm:text-4xl font-bold font-serif"> About us</h1>
               <p  className="leading-8 ">
-                We offer our customers a wide range of commercial cars and luxury cars for any occassion
+                We are a company offer our customers a wide range of commercial cars and luxury cars for any occassion.
               </p>
               <p >
                We believe that everyone deserves to experience the pleasure of driving a reliable and comfortable vehicle,regardless of their budget.
               </p>
-              <button  className="button-outline">
-                Get Started
-              </button>
             </div>
           </div>
         </div>
