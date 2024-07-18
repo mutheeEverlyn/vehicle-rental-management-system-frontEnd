@@ -5,8 +5,12 @@ import { loginApi } from '../features/login/LoginApi';
 import { registerApi } from '../features/register/RegisterApi';
 import { usersAPI } from '../features/users_management/UsersApi';
 import { LocationAPI } from '../features/location/LocationApi';
-import { customerAPI } from '../features/customer_support_tickets/CustomerApi';
+import { TicketAPI } from '../features/customer_support_tickets/TicketApi';
 import { FleetAPI } from '../features/fleet_Management/FleetAPI';
+import { BookingsAPI } from '../features/vehicles/BookingsApi';
+import { PaymentsAPI } from '../features/payments/PaymentsApi';
+import { CarsAPI } from '../features/vehicles/CarsAPI';
+import { customerSupportAPI } from '../features/customer_support_tickets/CustomerSupportAPI';
 //auth persist config
 const persistConfig = {
   key: 'auth',
@@ -19,8 +23,12 @@ const rootReducer = combineReducers({
   [registerApi.reducerPath]:registerApi.reducer,
   [usersAPI.reducerPath]: usersAPI.reducer,
   [LocationAPI.reducerPath]:LocationAPI.reducer,
-  [customerAPI.reducerPath]:customerAPI.reducer,
+  [TicketAPI.reducerPath]:TicketAPI.reducer,
  [FleetAPI.reducerPath]:FleetAPI.reducer,
+ [BookingsAPI.reducerPath]:BookingsAPI.reducer,
+ [customerSupportAPI.reducerPath]:customerSupportAPI.reducer,
+ [PaymentsAPI.reducerPath]:PaymentsAPI.reducer,
+ [CarsAPI.reducerPath]:CarsAPI.reducer,
 });
 
 //apply pesist Reducer to only counter reducer
@@ -34,8 +42,9 @@ export const store = configureStore({
         ignoredActions:['persist/PERSIST','persist/REHYDRATE'],
       },
     }).concat(loginApi.middleware).concat(registerApi.middleware)
-    .concat(usersAPI.middleware).concat(LocationAPI.middleware).concat(customerAPI.middleware)
-    .concat(FleetAPI.middleware),
+    .concat(usersAPI.middleware).concat(LocationAPI.middleware).concat(TicketAPI.middleware)
+    .concat(FleetAPI.middleware).concat(BookingsAPI.middleware).concat(customerSupportAPI.middleware)
+    .concat(PaymentsAPI.middleware).concat(CarsAPI.middleware),
 });
 
 export const persistedStore = persistStore(store);
