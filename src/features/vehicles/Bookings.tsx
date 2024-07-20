@@ -1,32 +1,39 @@
 import React from 'react';
-import { useGetBookingsQuery, useDeleteBookingsMutation, useUpdateBookingsMutation, TBookedVehicles } from './BookingsApi';
+import { useGetBookingsQuery, useDeleteBookingsMutation, TBookedVehicles } from './BookingsApi';
 import { Toaster, toast } from 'sonner';
-import { Link } from 'react-router-dom';
+import { useCreatePaymentsMutation } from '../payments/PaymentsApi';
 
 const Bookings: React.FC = () => {
-  const userDetails = JSON.parse(localStorage.getItem('userDetails') || '{}');
+  const userDetailsString = localStorage.getItem('userDetails') || '{}';
+  const userDetails = JSON.parse(userDetailsString);
   const user_id = userDetails?.user_id;
-  const { data:bookings, error, isLoading, isError, refetch } = useGetBookingsQuery();
 
- 
-  const [updateBooking] = useUpdateBookingsMutation();
+  const { data: bookings, error, isLoading, isError, refetch } = useGetBookingsQuery();
+  const [createCheckout] = useCreatePaymentsMutation();
   const [deleteBooking, { data: deleteMsg }] = useDeleteBookingsMutation();
 
-  const handleUpdate = (booking_id: number) => {
-    const updateBookingData = {
-      booking_status: 'booking updated',
-    };
-    updateBooking({ booking_id, ...updateBookingData });
+  const handleUpdate = async (booking: TBookedVehicles) => {
+    try {
+      const { data } = await createCheckout({ booking_id: booking.booking_id, amount: Number(booking.total_amount) });
+      if (data?.checkoutUrl) {
+        window.location.href = data.checkoutUrl;
+      } else {
+        console.error('Checkout url is not given');
+        toast.error('provide checkout url');
+      }
+    } catch (error) {
+      console.error('Error creating checkout session:', error);
+      toast.error('Error creating checkout session');
+    }
   };
-const MyBookings=bookings?.filter((booking:TBookedVehicles)=>booking.user_id===user_id)
+
+  const MyBookings = bookings?.filter((booking: TBookedVehicles) => booking.user_id === user_id);
+
   const handleDelete = async (booking_id: number) => {
     await deleteBooking(booking_id);
     toast.success(deleteMsg?.msg || 'Booking deleted successfully');
-    // Refetch bookings after deletion
     refetch();
   };
-
-
 
   return (
     <>
@@ -45,45 +52,36 @@ const MyBookings=bookings?.filter((booking:TBookedVehicles)=>booking.user_id===u
         <table className="table table-xs">
           <thead>
             <tr>
-              {/* <th className="text-white">Booking_id</th> */}
-              {/* <th className="text-white">user_id</th> */}
-              {/* <th className="text-white">vehicle_id</th> */}
-              {/* <th className="text-white">location_id</th> */}
-              <th className="text-white">booking_date</th>
-              <th className="text-white">return_date</th>
-              <th className="text-white">total_amount</th>
-              <th className="text-white">booking_status</th>
-              <th className="text-white">created_at</th>
-              <th className="text-white">updated_at</th>
+              <th className="text-white">Booking Date</th>
+              <th className="text-white">Return Date</th>
+              <th className="text-white">Total Amount</th>
+              <th className="text-white">Booking Status</th>
+              <th className="text-white">Created At</th>
+              <th className="text-white">Updated At</th>
               <th className="text-white">Options</th>
             </tr>
           </thead>
           <tbody>
             {isLoading ? (
               <tr>
-                <td colSpan={11}>Loading...</td>
+                <td colSpan={7}>Loading...</td>
               </tr>
             ) : isError ? (
               <tr>
-                <td colSpan={11}>Error: {error?.message || 'An error occurred'}</td>
+                <td colSpan={7}>Error: {error?.message || 'An error occurred'}</td>
               </tr>
             ) : (
               MyBookings?.map((booking: TBookedVehicles) => (
                 <tr key={booking.booking_id}>
-                  {/* <td>{booking.booking_id}</td> */}
-                  {/* <td>{booking.user_id}</td> */}
-                  {/* <td>{booking.vehicle_id}</td> */}
-                  {/* <td>{booking.location_id}</td> */}
                   <td>{booking.booking_date}</td>
                   <td>{booking.return_date}</td>
-                  <td>{booking.total_amount}</td>
+                  <td>${booking.total_amount}</td>
                   <td>{booking.booking_status}</td>
                   <td>{booking.created_at}</td>
                   <td>{booking.updated_at}</td>
                   <td className="flex gap-2">
-                      <button className="btn btn-sm btn-outline btn-success"><Link to='/payment'>Pay</Link></button>
-                    <button className="btn btn-sm btn-outline btn-info" onClick={() => handleUpdate(booking.booking_id)}>
-                      Update
+                    <button className="btn btn-sm btn-outline btn-info" onClick={() => handleUpdate(booking)}>
+                      Pay
                     </button>
                     <button className="btn btn-sm btn-outline btn-warning" onClick={() => handleDelete(booking.booking_id)}>
                       Delete
@@ -95,7 +93,7 @@ const MyBookings=bookings?.filter((booking:TBookedVehicles)=>booking.user_id===u
           </tbody>
           <tfoot>
             <tr>
-              <td className="text-white" colSpan={11}>
+              <td className="text-white" colSpan={7}>
                 {MyBookings ? `${MyBookings.length} records` : '0 records'}
               </td>
             </tr>
