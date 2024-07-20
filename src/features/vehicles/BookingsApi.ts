@@ -10,7 +10,8 @@ export interface TBookedVehicles{
     total_amount:number;
     booking_status:string;
     created_at:string;
-    updated_at:string
+    updated_at:string;
+    msg?: string;
   }
 
 export const BookingsAPI = createApi({
