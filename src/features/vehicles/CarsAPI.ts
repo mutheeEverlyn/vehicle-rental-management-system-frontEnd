@@ -1,22 +1,25 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-
 export interface TCar {
   vehicle_id: number;
   vehicleSpec_id: number;
   rental_rate:number;
+  location_id:number;
   availability:string;
-  manufacturer: string;
-  model: string;
-  year: number;
-  fuel_type: string;
-  engine_capacity: string;
-  transmission: string;
-  seating_capacity: number;
-  color: string;
-  features:string;
+   images:string;
   created_at: string;
   updated_at: string;
-  image: string;
+  specification:{
+     manufacturer: string;
+     model: string;
+      year: number;
+      fuel_type: string;
+      engine_capacity: string;
+      transmission: string;
+      seating_capacity: number;
+      color: string;
+      features:string;
+     
+  }
 }
 
 // Define the API slice
@@ -37,7 +40,7 @@ export const CarsAPI = createApi({
   tagTypes: ['cars'],
   endpoints: (builder) => ({
     getCars: builder.query<TCar[], void>({
-      query: () => 'vehicle',
+      query: () => 'vehicleData',
       providesTags: ['cars'],
     }),
     createCar: builder.mutation<TCar, Partial<TCar>>({
