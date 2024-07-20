@@ -9,23 +9,26 @@ export interface TUser {
   role: string;
 }
 
-// Define the API slice
 export const usersAPI = createApi({
   reducerPath: 'usersAPI',
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://localhost:8000',
     prepareHeaders: (headers) => {
-      const token = localStorage.getItem('token');
+      const userDetails = JSON.parse(localStorage.getItem('userDetails') || '{}');
+      const token = userDetails?.token;
       console.log('Token:', token);
       if (token) {
         headers.set('Authorization', `${token}`);
-        
       }
       return headers;
     },
   }),
   tagTypes: ['User'],
   endpoints: (builder) => ({
+    getUserById: builder.query<TUser, number>({
+      query: (user_id) => `users/${user_id}`,
+      providesTags: ['User'],
+    }),
     getUsers: builder.query<TUser[], void>({
       query: () => 'users',
       providesTags: ['User'],
@@ -58,6 +61,7 @@ export const usersAPI = createApi({
 
 // Export the auto-generated hooks
 export const {
+  useGetUserByIdQuery,
   useGetUsersQuery,
   useCreateUserMutation,
   useUpdateUserMutation,
