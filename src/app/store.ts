@@ -11,6 +11,7 @@ import { BookingsAPI } from '../features/vehicles/BookingsApi';
 import { PaymentsAPI } from '../features/payments/PaymentsApi';
 import { CarsAPI } from '../features/vehicles/CarsAPI';
 import { customerSupportAPI } from '../features/customer_support_tickets/CustomerSupportAPI';
+import { PaymentsInfoAPI } from '../features/payments/paymentsInfoAPI';
 //auth persist config
 const persistConfig = {
   key: 'auth',
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
  [customerSupportAPI.reducerPath]:customerSupportAPI.reducer,
  [PaymentsAPI.reducerPath]:PaymentsAPI.reducer,
  [CarsAPI.reducerPath]:CarsAPI.reducer,
+ [PaymentsInfoAPI.reducerPath]:PaymentsInfoAPI.reducer,
 });
 
 //apply pesist Reducer to only counter reducer
@@ -44,7 +46,7 @@ export const store = configureStore({
     }).concat(loginApi.middleware).concat(registerApi.middleware)
     .concat(usersAPI.middleware).concat(LocationAPI.middleware).concat(TicketAPI.middleware)
     .concat(FleetAPI.middleware).concat(BookingsAPI.middleware).concat(customerSupportAPI.middleware)
-    .concat(PaymentsAPI.middleware).concat(CarsAPI.middleware),
+    .concat(PaymentsAPI.middleware).concat(CarsAPI.middleware).concat(PaymentsInfoAPI.middleware),
 });
 
 export const persistedStore = persistStore(store);
