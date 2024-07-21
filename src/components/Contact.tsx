@@ -9,7 +9,7 @@ const Contact = () => {
               <h1 className="text-4xl sm:text-5xl font-bold text-white">
                 Let's collaborate on your upcoming vehicle rental venture to have an amaizing momment
               </h1>
-              <p className="text-gray-400">
+              <p className="text-gray-800">
                 If you have any questions or suggestions fell free to contact us
               </p>
             </div>
