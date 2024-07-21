@@ -3,7 +3,7 @@ import { useGetBookingsQuery,TBookedVehicles } from '../features/vehicles/Bookin
 import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
-// Register the necessary Chart.js components
+// Register  Chart.js components
 Chart.register(ArcElement, Tooltip, Legend);
 
 const RevenueReport: React.FC = () => {
