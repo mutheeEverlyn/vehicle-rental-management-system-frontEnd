@@ -14,7 +14,7 @@ const Admin: React.FC = () => {
   }
 
   return (
-    <div>
+    <div className='min-h-screen'>
       <TicketStatusChart data={data || []} />
     </div>
   );
