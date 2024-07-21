@@ -1,4 +1,8 @@
 import { RiLogoutCircleLine } from "react-icons/ri";
+import hamburger from '../assets/icon-hamburger.svg'
+import close from '../assets/icon-close.svg'
+import { useState } from 'react'
+import AdminPhoneDashboard from "./AdminPhoneDashboard";
 import { Link, Outlet } from 'react-router-dom';
 import Footer from '../components/Footer';
 import { CiSettings } from "react-icons/ci";
@@ -12,6 +16,11 @@ import { CarFront } from 'lucide-react';
 import { LayoutDashboard } from 'lucide-react';
 import { useGetUserByIdQuery } from '../features/users_management/UsersApi';
 const AdminDashboard = () => {
+  const [showMenu, setShowMenu] = useState(false);
+
+  const toggleMenu = () => {
+    setShowMenu(!showMenu);
+  };
   const userDetails = localStorage.getItem('userDetails');
   if (!userDetails) {
     return <div>Error: No user is logged in.</div>;
@@ -24,16 +33,21 @@ const AdminDashboard = () => {
   if (error) return <div>Error: {error.toString()}</div>;
   return (
     <>
-    <div className="bg-black h-16 flex items-center  px-4">
-        <button type="submit" className="bg-blue-400 text-white hover:bg-primary/80 transition duration-500 rounded-md w-20 h-10 ml-auto m-2 " ><div className="flex items-center text-white">
+    <div className="bg-black h-16 flex items-center justify-between px-4">
+        <button type="submit" className="bg-blue-400 text-white hover:bg-primary/80 transition duration-500 rounded-md w-20 h-10 md:ml-auto m-2 " ><div className="flex items-center text-white">
           <RiLogoutCircleLine className='text-white'/>
          <Link to='/'>Logout</Link> 
          </div>
         </button>
-        
+        {showMenu?(
+       <button onClick={toggleMenu} className='cursor-pointer transition-all '><img src={close} alt='close icon' className='bg-transparent  m-auto md:hidden h-10 '/></button>
+      ):(
+        <button onClick={toggleMenu} className=' cursor-pointer transition-all' >< img src={hamburger} alt='icon humburger' className='bg-transparent  m-auto md:hidden h-10 '/></button>
+      )}
+      <AdminPhoneDashboard showItems={showMenu}/>
       </div> 
     <div className="flex min-h-screen">
-      <div className="w-1/5 bg-gray-800  p-4 text-white">
+      <div className="w-full md:w-1/5 bg-gray-800  p-4 text-white md:block hidden">
       <div className="flex items-center justify-start gap-3 pb-3">
           <MdAdminPanelSettings size={50} />
           <div>
@@ -49,13 +63,14 @@ const AdminDashboard = () => {
           <li className="mb-2"><div className="flex items-center text-white"><MapPin  className="text-white mr-2" /><Link to="location">Location and Branches</Link></div></li>
           <li className="mb-2"><div className="flex items-center text-white"><TicketCheck  className="text-white mr-2"/><Link to="customer-support">Customer support tickets</Link></div></li>
           <li className="mb-2"><div className="flex items-center text-white"> <Car className="text-white mr-2"/><Link to="fleet">Fleet management</Link></div></li>
-          <li className="mb-2"><div className="flex items-center text-white"><CiSettings  className="text-white mr-2"/><Link to="my-tickets">Settings</Link></div></li>
+          <li className="mb-2"><div className="flex items-center text-white"><CiSettings  className="text-white mr-2"/><Link to="paymentsInfo">payments</Link></div></li>
         </ul>
       </div>
-      <div className="w-3/4 p-4">
+      <div className="w-full md:w-3/4 p-4">
         <Outlet /> {/* This renders the matched child route */}
         <Footer />
       </div>
+    
     </div>
     </>
   );
