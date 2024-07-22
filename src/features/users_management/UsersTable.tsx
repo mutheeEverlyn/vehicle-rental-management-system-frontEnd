@@ -13,21 +13,14 @@ export interface Tuser {
 }
 
 const UsersTable: React.FC = () => {
-  const userDetails = JSON.parse(localStorage.getItem('userDetails') || '{}');
-  const token = userDetails?.token;
-  const { data, error, isLoading, isError, refetch } = useGetUsersQuery(undefined, {
-    headers: {
-      'Authorization': `${token}`
-    }
-  });
+  const { data, error, isLoading, isError, refetch } = useGetUsersQuery();
 
   const [deleteUser, { data: deleteMsg }] = useDeleteUserMutation();
   const [createUser] = useCreateUserMutation();
   const [updateUser] = useUpdateUserMutation();
 
   const [editUserId, setEditUserId] = useState<number | null>(null);
-  const [formData, setFormData] = useState<Tuser>({
-    user_id: 0,
+  const [formData, setFormData] = useState({
     full_name: '',
     email: '',
     contact_phone: '',
@@ -44,7 +37,6 @@ const UsersTable: React.FC = () => {
       }
     } else {
       setFormData({
-        user_id: 0,
         full_name: '',
         email: '',
         contact_phone: '',
@@ -71,7 +63,6 @@ const UsersTable: React.FC = () => {
       await createUser(formData).unwrap();
       toast.success('User created successfully');
       setFormData({
-        user_id: 0,
         full_name: '',
         email: '',
         contact_phone: '',
@@ -219,8 +210,8 @@ const UsersTable: React.FC = () => {
               isError ? (
                 <tr><td colSpan={6}>Error: {error?.data?.message || 'An error occurred'}</td></tr>
               ) : (
-                data && data.map((user: Tuser, index: number) => (
-                  <tr key={index}>
+                data && data.map((user: Tuser) => (
+                  <tr key={user.user_id}>
                     <th>{user.user_id}</th>
                     <td>{editUserId === user.user_id ? (
                       <input
