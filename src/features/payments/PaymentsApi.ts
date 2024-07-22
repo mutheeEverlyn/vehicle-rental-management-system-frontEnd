@@ -6,14 +6,14 @@ export interface TPayments{
 export const PaymentsAPI = createApi({
   reducerPath: 'paymentsAPI',
   baseQuery: fetchBaseQuery({
-    baseUrl: ' http://localhost:8000',
+    baseUrl: 'https://vehicle-api-5bvc.onrender.com',
   }),
   endpoints: (builder) => ({
     createPayments: builder.mutation<TPayments,{booking_id:number;amount:number}>({
       query: ({booking_id,amount}) => ({
         url: 'create-checkout-session',
         method: 'POST',
-        body: {booking_id,amount,success_url:'http:localhost:8000/payment-success',cancel_url:'http://localhost:8000/payment-cancel'},
+        body: {booking_id,amount,success_url:'https://vehicle-api-5bvc.onrender.com/payment-success',cancel_url:'https://vehicle-api-5bvc.onrender.com/payment-cancel'},
       }),
     }), 
   }),

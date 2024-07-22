@@ -15,7 +15,7 @@ export interface LoginResponse {
 
 export const loginApi = createApi({
   reducerPath: 'loginAPI',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8000' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://vehicle-api-5bvc.onrender.com' }),
   endpoints: (builder) => ({
     loginUser: builder.mutation<LoginResponse, Partial<LogInUser>>({
       query: (user) => ({

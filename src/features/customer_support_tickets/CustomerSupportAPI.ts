@@ -22,7 +22,7 @@ export interface TcustomerSupport{
 export const customerSupportAPI = createApi({
   reducerPath: 'customerSupportAPI',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:8000',
+    baseUrl: 'https://vehicle-api-5bvc.onrender.com',
     prepareHeaders: (headers) => {
       const userDetails = JSON.parse(localStorage.getItem('userDetails')||'{}');
       const token=userDetails?.token;
