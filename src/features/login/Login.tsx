@@ -22,7 +22,7 @@ const Login: React.FC = () => {
 
       if (response.token) {
         // Store the token and user details in localStorage
-        localStorage.setItem('userDetails', JSON.stringify({ user_id: response.user.user_id, token: response.token }));
+        localStorage.setItem('userDetails', JSON.stringify({ user_id: response.user.user_id, token: response.token ,role:response.user.role }));
 
         if (response.user.role === "user") {
           toast.success('Login successful');

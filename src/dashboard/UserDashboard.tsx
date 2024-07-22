@@ -25,11 +25,14 @@ const UserDashboard: React.FC = () => {
   const { data, error, isLoading } = useGetUserByIdQuery(user_id);
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.toString()}</div>;
+  const handleLogout=()=>{
+    localStorage.removeItem('userDetails');
 
+  }
   return (
     <>
       <div className="bg-black h-16 flex items-center justify-between px-4">
-        <button type="submit" className="bg-blue-400 text-white hover:bg-primary/80 transition duration-500 rounded-md w-20 h-10 float-right md:ml-auto m-2">
+        <button onClick={handleLogout} type="submit" className="bg-blue-400 text-white hover:bg-primary/80 transition duration-500 rounded-md w-20 h-10 float-right md:ml-auto m-2">
           <div className="flex items-center text-white"><RiLogoutCircleLine className='text-white' /><Link to='/'>Logout</Link> </div>
         </button>
         {showMenu?(

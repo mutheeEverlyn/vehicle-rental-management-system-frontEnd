@@ -32,8 +32,8 @@ const BookVehicle = () => {
       return;
     }
 
-    if (!selectedCar || !selectedCar.vehicle_id) {
-      toast.error("Invalid vehicle selected.");
+    if (!selectedCar || !selectedCar.vehicle_id || selectedCar.availability === 'unavailable') {
+      toast.error("Invalid or unavailable vehicle selected.");
       return;
     }
 
@@ -82,7 +82,12 @@ const BookVehicle = () => {
   };
 
   const handleShowDetails = (car: TCar) => {
-    setSelectedCar(car);
+    console.log('Selected car:', car);  // Debugging
+    if (car.availability === 'available') {
+      setSelectedCar(car);
+    } else {
+      toast.error("This vehicle is not available.");
+    }
   };
 
   const handleCloseDetails = () => {
@@ -135,10 +140,11 @@ const BookVehicle = () => {
                 <h1 className="text-primary font-semibold">{car.specification.manufacturer} {car.specification.model}</h1>
                 <div className="flex justify-between items-center text-xl font-semibold">
                   <p>${car.rental_rate}/Day</p>
-                  <button onClick={() => handleShowDetails(car)} className="text-blue-600 hover:underline focus:outline-none" >
+                  <button onClick={() => handleShowDetails(car)} className="text-blue-600 hover:underline focus:outline-none">
                     Details
                   </button>
                 </div>
+                {car.availability === 'unavailable' && <p className="text-red-500">Not Available</p>}
               </div>
             </div>
           ))}
@@ -154,7 +160,6 @@ const BookVehicle = () => {
             <p><strong>Color:</strong> {selectedCar.specification.color}</p>
             <p><strong>Transmission:</strong> {selectedCar.specification.transmission}</p>
             <p><strong>Features:</strong> {selectedCar.specification.features}</p>
-            {/* <p><strong>Vehicle ID:</strong> {selectedCar.vehicle_id}</p> */}
             <div className="mb-4">
               <label className="block mb-2 text-sm font-medium text-gray-700">Booking Date</label>
               <DatePicker
@@ -178,7 +183,11 @@ const BookVehicle = () => {
             )}
             <div className="flex justify-between mt-4">
               <button onClick={handleCloseDetails} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md">Close</button>
-              <button onClick={handleBook} className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Book</button>
+              {selectedCar.availability === 'available' ? (
+                <button onClick={handleBook} className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Book</button>
+              ) : (
+                <p className="text-red-500">Not Available</p>
+              )}
             </div>
           </div>
         </div>

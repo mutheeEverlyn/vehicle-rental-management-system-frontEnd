@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.services{
+    background-image: url('./assets/car.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}

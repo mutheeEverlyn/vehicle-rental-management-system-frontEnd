@@ -5,7 +5,7 @@ import { useState } from 'react'
 import AdminPhoneDashboard from "./AdminPhoneDashboard";
 import { Link, Outlet } from 'react-router-dom';
 import Footer from '../components/Footer';
-import { CiSettings } from "react-icons/ci";
+import { CircleDollarSign } from 'lucide-react';
 import { MdAdminPanelSettings } from "react-icons/md";
 import { Car } from 'lucide-react';
 import { TicketCheck } from 'lucide-react';
@@ -31,10 +31,14 @@ const AdminDashboard = () => {
   const { data, error, isLoading } = useGetUserByIdQuery(user_id);
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.toString()}</div>;
+  const handleLogout=()=>{
+    localStorage.removeItem('userDetails');
+
+  }
   return (
     <>
     <div className="bg-black h-16 flex items-center justify-between px-4">
-        <button type="submit" className="bg-blue-400 text-white hover:bg-primary/80 transition duration-500 rounded-md w-20 h-10 md:ml-auto m-2 " ><div className="flex items-center text-white">
+        <button onClick={handleLogout} type="submit" className="bg-blue-400 text-white hover:bg-primary/80 transition duration-500 rounded-md w-20 h-10 md:ml-auto m-2 " ><div className="flex items-center text-white">
           <RiLogoutCircleLine className='text-white'/>
          <Link to='/'>Logout</Link> 
          </div>
@@ -63,7 +67,7 @@ const AdminDashboard = () => {
           <li className="mb-2"><div className="flex items-center text-white"><MapPin  className="text-white mr-2" /><Link to="location">Location and Branches</Link></div></li>
           <li className="mb-2"><div className="flex items-center text-white"><TicketCheck  className="text-white mr-2"/><Link to="customer-support">Customer support tickets</Link></div></li>
           <li className="mb-2"><div className="flex items-center text-white"> <Car className="text-white mr-2"/><Link to="fleet">Fleet management</Link></div></li>
-          <li className="mb-2"><div className="flex items-center text-white"><CiSettings  className="text-white mr-2"/><Link to="paymentsInfo">payments</Link></div></li>
+          <li className="mb-2"><div className="flex items-center text-white"><CircleDollarSign className="text-white mr-2"/><Link to="paymentsInfo">payments</Link></div></li>
         </ul>
       </div>
       <div className="w-full md:w-3/4 p-4">
