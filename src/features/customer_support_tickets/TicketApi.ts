@@ -28,10 +28,7 @@ export const TicketAPI = createApi({
   }),
   tagTypes: ['customerSupportTickets'],
   endpoints: (builder) => ({
-    getCustomerSupportTicketsById:builder.query<Tticket,number>({
-      query:(user_id)=>`customerSupportTickets/${user_id}`,
-      providesTags:['customerSupportTickets'],
-    }),
+   
     getCustomerSupportTickets: builder.query<Tticket[], void>({
       query: () => 'customerSupportTickets',
       providesTags: ['customerSupportTickets'],
@@ -64,7 +61,6 @@ export const TicketAPI = createApi({
 
 // Export the auto-generated hooks
 export const {
-  useGetCustomerSupportTicketsByIdQuery,
   useGetCustomerSupportTicketsQuery,
   useCreateCustomerSupportTicketsMutation,
   useUpdateCustomerSupportTicketsMutation,
