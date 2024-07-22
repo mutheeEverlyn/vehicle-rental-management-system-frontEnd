@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { useCreateCustomerSupportTicketsMutation, useUpdateCustomerSupportTicketsMutation, useGetCustomerSupportTicketsQuery } from "./TicketApi";
+import { useCreateCustomerSupportTicketsMutation} from "./TicketApi";
 import { Toaster, toast } from 'sonner';
-import { Tticket } from "./TicketApi";
+// import { Tticket } from "./TicketApi";
 
 const NewTicket: React.FC = () => {
   const userDetails = localStorage.getItem('userDetails');
@@ -11,18 +11,17 @@ const NewTicket: React.FC = () => {
 
   const parsedUserDetails = JSON.parse(userDetails);
   const user_id = parsedUserDetails.user_id;
-  const { data, error, isLoading, isError } = useGetCustomerSupportTicketsQuery();
-  const [updateTicket] = useUpdateCustomerSupportTicketsMutation();
-  const [createTicket] = useCreateCustomerSupportTicketsMutation(user_id);
+  const [createTicket] = useCreateCustomerSupportTicketsMutation();
 
   const [subject, setSubject] = useState('');
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState('');
-  const handleCreateTicket = (e: React.FormEvent) => {
+
+  const handleCreateTicket = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const newTicket = {
-      user_id: parseInt(localStorage.getItem('user_id') || '0', 10),
+      user_id: user_id,
       subject,
       description,
       status,
@@ -31,28 +30,13 @@ const NewTicket: React.FC = () => {
     };
 
     try {
-       createTicket(newTicket).unwrap();
-       console.log(localStorage)
-      console.log(newTicket)
-      console.log(data)
+      await createTicket(newTicket).unwrap();
       toast.success('Ticket created successfully');
       setSubject('');
       setDescription('');
       setStatus('');
     } catch (error) {
       toast.error('Failed to create ticket');
-    }
-  };
-
-  const handleUpdate = async (ticket_id: number) => {
-    const updateTicketData = {
-      ticket_status: 'ticket updated',
-    };
-    try {
-      await updateTicket({ ticket_id, ...updateTicketData }).unwrap();
-      toast.success('Ticket updated successfully');
-    } catch (error) {
-      toast.error('Failed to update ticket');
     }
   };
 
@@ -68,8 +52,8 @@ const NewTicket: React.FC = () => {
           },
         }}
       />
-      <div className="overflow-x-auto bg-gray-800 text-white rounded-lg p-4">
-        <h1 className='text-xl my-4'>My tickets</h1>
+      <div className="overflow-x-auto bg-gray-800 text-white rounded-lg p-4 min-h-screen">
+        <h1 className='text-xl my-4'>Create ticket</h1>
         <form onSubmit={handleCreateTicket} className="mb-4">
           <div className="mb-2">
             <label htmlFor="subject" className="block">Subject:</label>
@@ -93,7 +77,7 @@ const NewTicket: React.FC = () => {
             />
           </div>
           <div className="mb-2">
-            <label htmlFor="description" className="block">status:</label>
+            <label htmlFor="status" className="block">Status:</label>
             <textarea
               id="status"
               value={status}
@@ -104,47 +88,6 @@ const NewTicket: React.FC = () => {
           </div>
           <button type="submit" className="btn btn-primary">Create Ticket</button>
         </form>
-        <table className="table table-xs">
-          <thead>
-            <tr>
-              <th className='text-white'>ticket_id</th>
-              <th className='text-white'>user_id</th>
-              <th className='text-white'>subject</th>
-              <th className='text-white'>description</th>
-              <th className='text-white'>status</th>
-              <th className='text-white'>created_at</th>
-              <th className='text-white'>updated_at</th>
-              <th className='text-white'>Options</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoading ? (
-              <tr><td colSpan={7}>Loading...</td></tr>
-            ) : (
-              isError ? (
-                <tr><td colSpan={7}>Error: {error?.data?.message || 'An error occurred'}</td></tr>
-              ) : (
-                data && data.map((ticket: Tticket, index: number) => (
-                  <tr key={index}>
-                    <th>{ticket.ticket_id}</th>
-                    <th>{ticket.user_id}</th>
-                    <td>{ticket.subject}</td>
-                    <td>{ticket.description}</td>
-                    <td>{ticket.status}</td>
-                    <td>{ticket.created_at}</td>
-                    <td>{ticket.updated_at}</td>
-                    <td className='flex gap-2'>
-                      <button className='btn btn-sm btn-outline btn-info' onClick={() => handleUpdate(ticket.ticket_id)}>Update</button>
-                    </td>
-                  </tr>
-                ))
-              )
-            )}
-          </tbody>
-          <tfoot>
-            <tr><td className='text-white' colSpan={7}>{data ? `${data.length} records` : '0 records'}</td></tr>
-          </tfoot>
-        </table>
       </div>
     </>
   )
