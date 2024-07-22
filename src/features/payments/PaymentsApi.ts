@@ -19,7 +19,5 @@ export const PaymentsAPI = createApi({
   }),
 });
 export const {
- 
   useCreatePaymentsMutation
-
 }:any = PaymentsAPI;
