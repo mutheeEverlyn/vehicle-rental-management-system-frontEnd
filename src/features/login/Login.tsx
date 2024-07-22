@@ -1,77 +1,101 @@
+import React from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer";
-import { useState, useEffect, ChangeEvent, FormEvent } from "react";
-import * as yup from 'yup';
+import { useForm, SubmitHandler } from "react-hook-form";
+import { useLoginUserMutation } from "./LoginApi"; 
+import { Toaster, toast } from 'sonner';
 
 type FormData = {
   email: string;
   password: string;
 };
 
-type FormErrors = {
-  email?: string;
-  password?: string;
-};
-
-const Login = () => {
-  const [error, setError] = useState<FormErrors>({});
-  const [formData, setFormData] = useState<FormData>({ email: '', password: '' });
-  const [isLogin, setIsLogin] = useState(false);
+const Login: React.FC = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
   const navigate = useNavigate();
+  const [loginUser, { isLoading, error }] = useLoginUserMutation();
 
-  // Reset form state and login status when component mounts
-  useEffect(() => {
-    setFormData({ email: '', password: '' });
-    setError({});
-    setIsLogin(false);
-  }, []);
-
-  //  validation using yup
-  const validateForm = yup.object().shape({
-    email: yup.string().required('Email is required').email('A valid email is required'),
-    password: yup.string().required('Password is required').min(8, 'Password must be at least 8 characters').max(10, 'Password must be at most 10 characters')
-  });
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleLogin = async (e: FormEvent) => {
-    e.preventDefault();
+  const onSubmit: SubmitHandler<FormData> = async (formData) => {
     try {
-      await validateForm.validate(formData, { abortEarly: false });
-      console.log('Login successful', formData);
-      setError({});
-      setIsLogin(true);
-      navigate('/userDashboard'); // Navigate to userDashboard upon successful login
-    } catch (err: any) {
-      const validationErrors: FormErrors = {};
-      err.inner.forEach((error: yup.ValidationError) => {
-        validationErrors[error.path as keyof FormData] = error.message;
-      });
-      setError(validationErrors);
-      setIsLogin(false);
+      const response = await loginUser(formData).unwrap();
+      console.log('Login response:', response);
+
+      if (response.token) {
+        // Store the token and user details in localStorage
+        localStorage.setItem('userDetails', JSON.stringify({ user_id: response.user.user_id, token: response.token }));
+
+        if (response.user.role === "user") {
+          toast.success('Login successful');
+          navigate('/userDashboard');
+        } else if (response.user.role === 'admin') {
+          toast.success('Login successful');
+          navigate('/adminDashboard');
+        }
+        else {
+          toast.error('Login failed: Unknown role');
+        }
+      } else {
+        toast.error('Login failed: No token received');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      toast.error('Login failed: Invalid credentials or server error');
     }
   };
 
   return (
     <>
+      <Toaster toastOptions={{
+        classNames: {
+          error: 'bg-red-400',
+          success: 'text-green-400',
+          warning: 'text-yellow-400',
+          info: 'bg-blue-400',
+        },
+      }} />
       <div className="m-auto flex flex-col container min-h-[620px]">
-        <h1 className="font-bold text-3xl m-auto">Login to Juneva car rentals</h1>
-        <form onSubmit={handleLogin} className="flex flex-col gap-5 my-10 mx-auto w-2/3 border-blue-400 rounded-md border-2 p-10">
-          <label htmlFor="email">Enter Your email</label>
-          {error.email && <p className='text-red-600'>{error.email}</p>}
-          <input type="email" name="email" onChange={handleChange} value={formData.email} placeholder="example@gmail.com" className="border-2 border-black rounded-md p-2" />
+        <h1 className="font-bold text-3xl m-auto">Login to Juneva Car Rentals</h1>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5 my-10 mx-auto w-2/3 border-blue-400 rounded-md border-2 p-10">
+          <label htmlFor="email">Enter Your Email</label>
+          {errors.email && <p className='text-red-600'>{errors.email.message}</p>}
+          <input
+            type="email"
+            {...register("email", {
+              required: 'Email is required',
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: 'Invalid email address'
+              }
+            })}
+            placeholder="example@gmail.com"
+            className="border-2 border-black rounded-md p-2"
+          />
 
-          <label htmlFor="password">Enter Your password</label>
-          {error.password && <p className='text-red-600'>{error.password}</p>}
-          <input type="password" name="password" onChange={handleChange} value={formData.password} placeholder="**********" className="border-2 border-black rounded-md p-2" />
-          <button type="submit" className="rounded-md bg-blue-400 p-2">Login</button>
+          <label htmlFor="password">Enter Your Password</label>
+          {errors.password && <p className='text-red-600'>{errors.password.message}</p>}
+          <input
+            type="password"
+            {...register("password", {
+              required: 'Password is required',
+              minLength: {
+                value: 8,
+                message: 'Password must be at least 8 characters'
+              }
+            })}
+            placeholder="**********"
+            className="border-2 border-black rounded-md p-2"
+          />
+
+          <button type="submit" className="rounded-md bg-blue-400 p-2" disabled={isLoading}>
+            {isLoading ? 'Logging in...' : 'Login'}
+          </button>
+
+          {error && <p className="text-red-600">Failed to login: {error.message}</p>}
+
           <button type="button" className="rounded-md bg-blue-400 p-2">
             <Link to='/'>Go Back</Link>
           </button>
         </form>
-       
       </div>
       <Footer />
     </>
