@@ -15,7 +15,8 @@ export const LocationAPI = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://localhost:8000',
     prepareHeaders: (headers) => {
-      const token = localStorage.getItem('token');
+      const userDetails = JSON.parse(localStorage.getItem('userDetails')||'{}');
+      const token=userDetails?.token;
       console.log('Token:', token);
       if (token) {
         headers.set('Authorization', `${token}`);
