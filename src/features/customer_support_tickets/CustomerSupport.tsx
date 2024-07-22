@@ -6,7 +6,7 @@ const CustomerSupport: React.FC = () => {
   const userDetails = JSON.parse(localStorage.getItem('userDetails') || '{}');
   const token = userDetails?.token;
   const { data, error, isLoading, isError } = useGetCustomerSupportQuery(undefined, {   headers: {
-    'Authorization': `Bearer ${token}`
+    'Authorization': `${token}`
   }
 });
   const [deleteCustomerSupport, { data: deleteMsg }] = useDeleteCustomerSupportMutation();
@@ -28,7 +28,7 @@ const CustomerSupport: React.FC = () => {
           },
         }}
       />
-      <div className="overflow-x-auto  bg-gray-800 text-white rounded-lg p-4">
+      <div className="overflow-x-auto  bg-gray-800 text-white rounded-lg p-4 min-h-screen">
         <h1 className='text-xl my-4'>customer support tickets Data</h1>
         <table className="table table-xs">
           <thead>
