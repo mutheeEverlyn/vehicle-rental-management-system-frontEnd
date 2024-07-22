@@ -58,7 +58,7 @@ export const customerSupportAPI = createApi({
     }),
     deleteCustomerSupport: builder.mutation<{ success: boolean; ticket_id: number }, number>({
       query: (ticket_id) => ({
-        url: `customerSupportTicketsData/${ticket_id}`,
+        url: `customerSupportTickets/${ticket_id}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['customerSupportTicketsData'],
