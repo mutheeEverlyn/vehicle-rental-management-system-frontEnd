@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useGetCarsQuery, useCreateCarMutation, useUpdateCarMutation, useDeleteCarMutation, TCar } from "./CarsAPI";
 import { Toaster, toast } from 'sonner';
 
@@ -7,6 +7,8 @@ const Vehicles: React.FC = () => {
   const [createCar] = useCreateCarMutation();
   const [updateCar] = useUpdateCarMutation();
   const [deleteCar] = useDeleteCarMutation();
+  
+  // Form state
   const [availability, setAvailability] = useState('');
   const [manufacturer, setManufacturer] = useState('');
   const [model, setModel] = useState('');
@@ -18,11 +20,14 @@ const Vehicles: React.FC = () => {
   const [color, setColor] = useState('');
   const [rental_rate, setRental_rate] = useState<number | string>('');
   const [features, setFeatures] = useState('');
-  const [images, setImages] = useState<string>(''); 
+  const [images, setImages] = useState<string>('');
+  
+  // Edit state
   const [editCarId, setEditCarId] = useState<number | null>(null);
+  
   useEffect(() => {
     if (editCarId !== null && cars) {
-      const carToEdit = cars.find((car:TCar) => car.vehicle_id === editCarId);
+      const carToEdit = cars?.find((car: TCar) => car.vehicle_id === editCarId);
       if (carToEdit) {
         setAvailability(carToEdit.availability);
         setManufacturer(carToEdit.specification.manufacturer);
@@ -42,7 +47,7 @@ const Vehicles: React.FC = () => {
 
   const handleCreateCar = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     const newCar = {
       availability,
       manufacturer,
@@ -59,36 +64,21 @@ const Vehicles: React.FC = () => {
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
-
-    console.log("New Car Data:", newCar);
-
+  
     try {
-      const result = await createCar(newCar).unwrap();
-      console.log("Car added successfully:", result);
+      await createCar(newCar).unwrap(); // Removed the 'result' variable
       toast.success('Car added successfully');
       // Reset form fields
-      setAvailability('');
-      setManufacturer('');
-      setModel('');
-      setYear('');
-      setFuel_type('');
-      setEngine_capacity('');
-      setTransmission('');
-      setSeating_capacity('');
-      setColor('');
-      setRental_rate('');
-      setFeatures('');
-      setImages('');
+      resetForm();
     } catch (error: any) {
-      console.error('Failed to add car:', error);
       if (error.data) {
-        console.error('Error data:', error.data);
         toast.error(`Failed to add car: ${error.data.message}`);
       } else {
         toast.error('Failed to add car');
       }
     }
   };
+  
 
   const handleEditCar = (car: TCar) => {
     setEditCarId(car.vehicle_id);
@@ -109,7 +99,7 @@ const Vehicles: React.FC = () => {
   const handleUpdateCar = async (e: React.FormEvent) => {
     e.preventDefault();
   
-    if (editCarId === null || editCarId === undefined) {
+    if (editCarId === null) {
       toast.error('No car selected for update');
       return;
     }
@@ -130,48 +120,43 @@ const Vehicles: React.FC = () => {
       updated_at: new Date().toISOString(),
     };
   
-    console.log("Updating car with ID:", editCarId);
-    console.log("Updated Car Data:", updatedCar);
-  
     try {
-      const result = await updateCar({ id: editCarId, ...updatedCar }).unwrap();
-      console.log("Car updated successfully:", result);
+      await updateCar({ vehicle_id: editCarId, ...updatedCar }).unwrap();
       toast.success('Car updated successfully');
       setEditCarId(null);
       // Reset form fields
-      setAvailability('');
-      setManufacturer('');
-      setModel('');
-      setYear('');
-      setFuel_type('');
-      setEngine_capacity('');
-      setTransmission('');
-      setSeating_capacity('');
-      setColor('');
-      setRental_rate('');
-      setFeatures('');
-      setImages('');
+      resetForm();
     } catch (error: any) {
-      console.error('Failed to update car:', error);
       if (error.data) {
-        console.error('Error data:', error.data);
         toast.error(`Failed to update car: ${error.data.message || 'Unknown error'}`);
       } else {
         toast.error('Failed to update car');
       }
     }
   };
-  
-  
 
   const handleDeleteCar = async (id: number) => {
     try {
       await deleteCar(id).unwrap();
       toast.success('Car deleted successfully');
     } catch (error: any) {
-      console.error('Failed to delete car:', error);
       toast.error('Failed to delete car');
     }
+  };
+
+  const resetForm = () => {
+    setAvailability('');
+    setManufacturer('');
+    setModel('');
+    setYear('');
+    setFuel_type('');
+    setEngine_capacity('');
+    setTransmission('');
+    setSeating_capacity('');
+    setColor('');
+    setRental_rate('');
+    setFeatures('');
+    setImages('');
   };
 
   return (
@@ -296,6 +281,7 @@ const Vehicles: React.FC = () => {
             <input
               id="rental_rate"
               type="number"
+              step="0.01"
               value={rental_rate}
               onChange={(e) => setRental_rate(e.target.value)}
               className="w-full p-2 rounded bg-gray-700 text-white"
@@ -314,45 +300,63 @@ const Vehicles: React.FC = () => {
             />
           </div>
           <div className="mb-2">
-            <label htmlFor="image" className="block">Image URL:</label>
+            <label htmlFor="images" className="block">Images (URL):</label>
             <input
               id="images"
               type="text"
               value={images}
               onChange={(e) => setImages(e.target.value)}
               className="w-full p-2 rounded bg-gray-700 text-white"
-              required
             />
           </div>
-          <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
             {editCarId ? 'Update Car' : 'Add Car'}
           </button>
         </form>
 
         {isLoading && <p>Loading cars...</p>}
-        {isError && <p>Failed to load cars.</p>}
-
-        {cars && cars.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {cars.map((car:TCar) => (
-              <div key={car.vehicle_id} className="bg-gray-800 p-4 rounded shadow">
-                <img src={car.images} alt={car.specification.model} className="w-full h-40 object-cover mb-4 rounded" />
-                <p><strong>Model:</strong> {car.specification.model}</p>
-                <p><strong>Year:</strong> {car.specification.year}</p>
-                <p><strong>Fuel Type:</strong> {car.specification.fuel_type}</p>
-                <p><strong>Transmission:</strong> {car.specification.transmission}</p>
-                <p><strong>Seating Capacity:</strong> {car.specification.seating_capacity}</p>
-                <p><strong>Rental Rate:</strong> {car.rental_rate}</p>
-                <button onClick={() => handleEditCar(car)} className="btn btn-sm btn-outline btn-info">
-                  Edit
-                </button>
-                <button onClick={() => handleDeleteCar(car.vehicle_id)} className="btn btn-sm btn-outline btn-warning">
-                  Delete
-                </button>
-              </div>
+        {isError && <p>Error loading cars.</p>}
+        
+        <table className="w-full bg-gray-800 text-white border border-gray-700">
+          <thead>
+            <tr>
+              <th className="p-2 border-b">ID</th>
+              <th className="p-2 border-b">Manufacturer</th>
+              <th className="p-2 border-b">Model</th>
+              <th className="p-2 border-b">Year</th>
+              <th className="p-2 border-b">Availability</th>
+              <th className="p-2 border-b">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cars && cars.map((car: TCar) => (
+              <tr key={car.vehicle_id}>
+                <td className="p-2 border-b">{car.vehicle_id}</td>
+                <td className="p-2 border-b">{car.specification.manufacturer}</td>
+                <td className="p-2 border-b">{car.specification.model}</td>
+                <td className="p-2 border-b">{car.specification.year}</td>
+                <td className="p-2 border-b">{car.availability}</td>
+                <td className="p-2 border-b">
+                  <button
+                    onClick={() => handleEditCar(car)}
+                    className="btn btn-sm btn-outline btn-info mr-2"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDeleteCar(car.vehicle_id)}
+                    className="btn btn-sm btn-outline btn-warning"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
             ))}
-          </div>
-        )}
+          </tbody>
+        </table>
       </div>
     </>
   );
