@@ -80,12 +80,14 @@ const Bookings: React.FC = () => {
                   <td>{booking.created_at}</td>
                   <td>{booking.updated_at}</td>
                   <td className="flex gap-2">
-                    <button className="btn btn-sm btn-outline btn-info" onClick={() => handleUpdate(booking)}>
-                      Pay
-                    </button>
                     <button className="btn btn-sm btn-outline btn-warning" onClick={() => handleDelete(booking.booking_id)}>
-                      Delete
+                      cancel
                     </button>
+                    {booking.booking_status !== 'confirmed' && (
+                      <button className="btn btn-sm btn-outline btn-info" onClick={() => handleUpdate(booking)}>
+                        Pay
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))

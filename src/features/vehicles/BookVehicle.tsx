@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGetCarsQuery, TCar } from "./CarsAPI";
-import { useCreateBookingsMutation } from './BookingsApi';
+import { useCreateBookingsMutation, useGetBookingsQuery, TBookedVehicles } from './BookingsApi';
 import { useGetLocationQuery, Tlocation } from "../location/LocationApi";
 import { Toaster, toast } from 'sonner';
 import DatePicker from 'react-datepicker';
@@ -10,6 +10,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 const BookVehicle = () => {
   const { data: cars, error, isLoading } = useGetCarsQuery();
   const { data: locations, isLoading: isLocationsLoading, error: locationsError } = useGetLocationQuery();
+  const { data: bookings, isLoading: isBookingsLoading, error: bookingsError } = useGetBookingsQuery();
   const [createBooking] = useCreateBookingsMutation();
   const navigate = useNavigate();
   const [selectedLocation_id, setSelectedLocation_id] = useState<number | null>(null);
@@ -39,6 +40,19 @@ const BookVehicle = () => {
 
     if (!bookingDate || !returnDate) {
       toast.error("Please select both booking and return dates.");
+      return;
+    }
+
+    // Check for date overlaps
+    const isOverlapping = bookings?.some((booking: TBookedVehicles) =>
+      booking.vehicle_id === selectedCar.vehicle_id &&
+      ((new Date(booking.booking_date) <= bookingDate && new Date(booking.return_date) >= bookingDate) ||
+        (new Date(booking.booking_date) <= returnDate && new Date(booking.return_date) >= returnDate) ||
+        (new Date(booking.booking_date) >= bookingDate && new Date(booking.return_date) <= returnDate))
+    );
+
+    if (isOverlapping) {
+      toast.error("Selected dates overlap with an existing booking for this vehicle.");
       return;
     }
 
@@ -94,8 +108,8 @@ const BookVehicle = () => {
     setSelectedCar(null);
   };
 
-  if (isLoading || isLocationsLoading) return <p>Loading...</p>;
-  if (error || locationsError) return <p>Error loading data.</p>;
+  if (isLoading || isLocationsLoading || isBookingsLoading) return <p>Loading...</p>;
+  if (error || locationsError || bookingsError) return <p>Error loading data.</p>;
 
   // Debugging logs
   console.log('Cars:', cars);
