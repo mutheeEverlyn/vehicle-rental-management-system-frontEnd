@@ -36,7 +36,6 @@ const AdminPhoneDashboard =({showItems}:mobile) => {
         <li><button><Link to='vehicles'  className='hover:border-b-2 hover:text-blue-400 mb-2 inline-block text-white'>Manage Vehicles</Link></button></li>
         <li><button><Link to='book-vehicle'  className='hover:border-b-2 hover:text-blue-400 mb-2 inline-block text-white'>Vehicles List</Link></button></li>
         <li><button><Link to='users'  className='hover:border-b-2 hover:text-blue-400 mb-2 inline-block text-white'>Manage Users</Link></button></li>
-        <li><button><Link to='reports'  className='hover:border-b-2 hover:text-blue-400 mb-2 inline-block text-white'>Reports</Link></button></li>
         <li> <button><Link to='location'  className='hover:border-b-2 hover:text-blue-400 mb-2 inline-block text-white'>Location and Branches</Link></button></li>
         <li> <button ><Link to='customer-support'  className='hover:border-b-2 hover:text-blue-400 mb-2 inline-block text-white'>customer support</Link></button></li>
         <li><button><Link to='fleet'  className='hover:border-b-2 hover:text-blue-400 mb-2 inline-block text-white'>Fleet management</Link></button></li>

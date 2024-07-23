@@ -10,7 +10,6 @@ import { MdAdminPanelSettings } from "react-icons/md";
 import { Car } from 'lucide-react';
 import { TicketCheck } from 'lucide-react';
 import { MapPin } from 'lucide-react';
-import { ClipboardPlus } from 'lucide-react';
 import { UserRoundCog } from 'lucide-react';
 import { CarFront } from 'lucide-react';
 import { LayoutDashboard } from 'lucide-react';
@@ -63,7 +62,6 @@ const AdminDashboard = () => {
           <li className="mb-2"><div className="flex items-center text-white"><CarFront className="text-white mr-2"  /><Link to="vehicles">Manage Vehicles</Link></div></li>
           <li className="mb-2"><div className="flex items-center text-white"><CarFront className="text-white mr-2"  /><Link to="book-vehicle">Vehicles List</Link></div></li>
           <li className="mb-2"><div className="flex items-center text-white"><UserRoundCog  className="text-white mr-2"  /><Link to="users">Manage Users</Link></div></li>
-          <li className="mb-2"><div className="flex items-center text-white"> <ClipboardPlus  className="text-white mr-2" /><Link to="reports">Reports</Link></div></li>
           <li className="mb-2"><div className="flex items-center text-white"><MapPin  className="text-white mr-2" /><Link to="location">Location and Branches</Link></div></li>
           <li className="mb-2"><div className="flex items-center text-white"><TicketCheck  className="text-white mr-2"/><Link to="customer-support">Customer support tickets</Link></div></li>
           <li className="mb-2"><div className="flex items-center text-white"> <Car className="text-white mr-2"/><Link to="fleet">Fleet management</Link></div></li>

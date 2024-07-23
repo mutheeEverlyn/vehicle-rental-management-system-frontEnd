@@ -1,7 +1,8 @@
 import React from 'react';
 import TicketStatusChart from './TicketStatusChart';
 import { useGetCustomerSupportQuery } from '../features/customer_support_tickets/CustomerSupportAPI';
-
+import BookingSummary from "./BookingSummary"
+import RevenueReport from "./RevenueReport"
 const Admin: React.FC = () => {
   const { data, error, isLoading, isError } = useGetCustomerSupportQuery();
 
@@ -16,6 +17,8 @@ const Admin: React.FC = () => {
   return (
     <div className='min-h-screen'>
       <TicketStatusChart data={data || []} />
+      <BookingSummary/>
+      <RevenueReport/>
     </div>
   );
 };

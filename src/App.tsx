@@ -21,7 +21,6 @@ import MyTickets from './features/customer_support_tickets/MyTickets';
 import NewTicket from './features/customer_support_tickets/NewTicket';
 import Fleet from './features/fleet_Management/Fleet';
 import CustomerSupport from './features/customer_support_tickets/CustomerSupport';
-import Reports from './features/reports/Reports';
 import UsersTable from './features/users_management/UsersTable'
 import Vehicles from './features/vehicles/Vehicles';
 import Location from './features/location/Location';
@@ -94,10 +93,6 @@ const App: React.FC = () => {
         {
           path: 'users',
           element: <UsersTable/>,
-        },
-        {
-          path: 'reports',
-          element: <Reports />,
         },
         {
           path: 'location',
