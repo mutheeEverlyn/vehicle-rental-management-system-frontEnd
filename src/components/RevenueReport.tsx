@@ -71,7 +71,7 @@ const RevenueReport: React.FC = () => {
               legend: {
                 position: 'left', // Set the legend position to the left
                 labels: {
-                  usePointStyle: true, // Display labels as point styles
+                  usePointStyle: false, // Display labels as point styles
                 },
               },
             }
