@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useGetBookingsQuery,TBookedVehicles } from '../features/vehicles/BookingsApi';
+import { useGetBookingsQuery, TBookedVehicles } from '../features/vehicles/BookingsApi';
 import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
-// Register  Chart.js components
+// Register Chart.js components
 Chart.register(ArcElement, Tooltip, Legend);
 
 const RevenueReport: React.FC = () => {
@@ -61,9 +61,25 @@ const RevenueReport: React.FC = () => {
   }
 
   return (
-    <div className="chart-container"  style={{ width: '200px', height: '200px' }}>
-      <h2 className="text-xl mb-2">Revenue report</h2>
-      {chartData ? <Pie data={chartData}  /> : <div>No data available</div>}
+    <div className="chart-container" style={{ width: '300px', height: '300px' }}>
+      <h2 className="text-xl mb-2">Revenue Report</h2>
+      {chartData ? (
+        <Pie
+          data={chartData}
+          options={{
+            plugins: {
+              legend: {
+                position: 'left', // Set the legend position to the left
+                labels: {
+                  usePointStyle: true, // Display labels as point styles
+                },
+              },
+            }
+          }}
+        />
+      ) : (
+        <div>No data available</div>
+      )}
     </div>
   );
 };
