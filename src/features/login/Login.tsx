@@ -53,7 +53,7 @@ const Login: React.FC = () => {
           info: 'bg-blue-400',
         },
       }} />
-      <div className="m-auto flex flex-col container min-h-[620px]">
+      <div className="m-auto flex flex-col container min-h-screen">
         <h1 className="font-bold text-3xl m-auto">Login to Juneva Car Rentals</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5 my-10 mx-auto w-2/3 border-blue-400 rounded-md border-2 p-10">
           <label htmlFor="email">Enter Your Email</label>
