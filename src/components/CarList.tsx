@@ -33,7 +33,7 @@ const CarList = () => {
                 <div className="w-full h-[120px]">
                   <img
                     src={data.image}
-                    alt=""
+                    alt="car"
                     className="w-full h-[120px] object-contain sm:translate-x-8 group-hover:sm:translate-x-16 duration-700"
                   />
                 </div>
@@ -41,7 +41,7 @@ const CarList = () => {
                   <h1 className="text-primary font-semibold">{data.name}</h1>
                   <div className="flex justify-between items-center text-xl font-semibold">
                     <p>${data.price}/Day</p>
-                    <a href="#">Details</a>
+                    {/* <a href="#">Details</a> */}
                   </div>
                 </div>
                 <p className="text-xl font-semibold absolute top-0 left-3">
