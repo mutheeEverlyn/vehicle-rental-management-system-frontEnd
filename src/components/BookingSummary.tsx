@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useGetBookingsQuery,TBookedVehicles } from '../features/vehicles/BookingsApi';
+import { useGetBookingsQuery, TBookedVehicles } from '../features/vehicles/BookingsApi';
 import { Chart, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { format, startOfWeek, parseISO } from 'date-fns';
 
-// Register the  Chart.js components
+// Register the Chart.js components
 Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const BookingSummary: React.FC = () => {
@@ -12,8 +13,23 @@ const BookingSummary: React.FC = () => {
 
   useEffect(() => {
     if (bookings) {
-      const labels = bookings.map((booking: TBookedVehicles) => booking.booking_date);
-      const data = bookings.map((booking: TBookedVehicles) => booking.total_amount);
+      // Aggregate bookings by week
+      const weeklyBookings: { [weekStart: string]: number } = {};
+
+      bookings.forEach((booking: TBookedVehicles) => {
+        const bookingDate = parseISO(booking.booking_date);
+        const weekStart = format(startOfWeek(bookingDate, { weekStartsOn: 1 }), 'yyyy-MM-dd');
+
+        if (!weeklyBookings[weekStart]) {
+          weeklyBookings[weekStart] = 0;
+        }
+
+        weeklyBookings[weekStart] += booking.total_amount;
+      });
+
+      // Prepare chart data
+      const labels = Object.keys(weeklyBookings);
+      const data = Object.values(weeklyBookings);
 
       const chartData = {
         labels: labels,
@@ -42,7 +58,7 @@ const BookingSummary: React.FC = () => {
 
   return (
     <div className="chart-container">
-      <h2 className="text-xl mb-4">Booking summary</h2>
+      <h2 className="text-xl mb-4">Booking Summary</h2>
       {chartData ? <Bar data={chartData} /> : <div>No data available</div>}
     </div>
   );
