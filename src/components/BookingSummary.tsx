@@ -42,6 +42,7 @@ const BookingSummary: React.FC = () => {
 
   return (
     <div className="chart-container">
+      <h2 className="text-xl mb-4">Booking summary</h2>
       {chartData ? <Bar data={chartData} /> : <div>No data available</div>}
     </div>
   );

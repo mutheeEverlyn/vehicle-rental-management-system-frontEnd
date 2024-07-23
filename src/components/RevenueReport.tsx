@@ -62,6 +62,7 @@ const RevenueReport: React.FC = () => {
 
   return (
     <div className="chart-container"  style={{ width: '400px', height: '400px' }}>
+      <h2 className="text-xl mb-4">Revenue report</h2>
       {chartData ? <Pie data={chartData}  /> : <div>No data available</div>}
     </div>
   );

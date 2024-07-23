@@ -21,7 +21,7 @@ const AdminPhoneDashboard =({showItems}:mobile) => {
     <div
     className={`${
       showItems ? "right-0" : "-left-[100%]"
-    } fixed bottom-0 top-16 z-20 flex h-screen w-[75%] flex-col justify-between   px-8 pb-6 pt-16  transition-all duration-200 md:hidden rounded-r-xl shadow-md`}
+    } fixed bottom-0 top-16 z-20 flex h-screen w-[75%] flex-col justify-between   px-8 pb-6 pt-6  transition-all duration-200 md:hidden rounded-r-xl shadow-md`}
   >
     <div className="card bg-black">
     <div className="flex items-center justify-start gap-3">
