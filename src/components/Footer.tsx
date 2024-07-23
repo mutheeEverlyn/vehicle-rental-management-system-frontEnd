@@ -23,6 +23,8 @@ const Footer = () => {
 
       <div className="text-center md:text-left">
         <p className="mb-3">www.junevaCarRentals.com</p>
+        </div>
+        <div className="text-center md:text-left">
         <p>Copyright &copy; 2024. All rights reserved.</p>
       </div>
     </div>
