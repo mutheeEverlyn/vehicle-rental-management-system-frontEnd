@@ -71,64 +71,43 @@ const AdminDashboard = () => {
               </NavLink>
             </li>
             <li className="mb-2">
-              <NavLink
-                to="vehicles"
-                className={({ isActive }) => `flex items-center text-white ${isActive ? 'text-blue-500' : ''}`}
-              >
+              <NavLink to="vehicles" className={({ isActive }) => `flex items-center text-white ${isActive ? 'text-blue-500' : ''}`}>
                 <CarFront className="text-white mr-2" />
                 Manage Vehicles
               </NavLink>
             </li>
             <li className="mb-2">
-              <NavLink
-                to="book-vehicle"
-                className={({ isActive }) => `flex items-center text-white ${isActive ? 'text-blue-500' : ''}`}
-              >
+              <NavLink to="book-vehicle" className={({ isActive }) => `flex items-center text-white ${isActive ? 'text-blue-500' : ''}`}>
                 <CarFront className="text-white mr-2" />
                 Vehicles List
               </NavLink>
             </li>
             <li className="mb-2">
-              <NavLink
-                to="users"
-                className={({ isActive }) => `flex items-center text-white ${isActive ? 'text-blue-500' : ''}`}
-              >
+              <NavLink to="users" className={({ isActive }) => `flex items-center text-white ${isActive ? 'text-blue-500' : ''}`}>
                 <UserRoundCog className="text-white mr-2" />
                 Manage Users
               </NavLink>
             </li>
             <li className="mb-2">
-              <NavLink
-                to="location"
-                className={({ isActive }) => `flex items-center text-white ${isActive ? 'text-blue-500' : ''}`}
-              >
+              <NavLink to="location" className={({ isActive }) => `flex items-center text-white ${isActive ? 'text-blue-500' : ''}`}>
                 <MapPin className="text-white mr-2" />
                 Location and Branches
               </NavLink>
             </li>
             <li className="mb-2">
-              <NavLink
-                to="customer-support"
-                className={({ isActive }) => `flex items-center text-white ${isActive ? 'text-blue-500' : ''}`}
-              >
+              <NavLink to="customer-support" className={({ isActive }) => `flex items-center text-white ${isActive ? 'text-blue-500' : ''}`}>
                 <TicketCheck className="text-white mr-2" />
                 Customer support tickets
               </NavLink>
             </li>
             <li className="mb-2">
-              <NavLink
-                to="fleet"
-                className={({ isActive }) => `flex items-center text-white ${isActive ? 'text-blue-500' : ''}`}
-              >
+              <NavLink to="fleet" className={({ isActive }) => `flex items-center text-white ${isActive ? 'text-blue-500' : ''}`}>
                 <Car className="text-white mr-2" />
                 Fleet management
               </NavLink>
             </li>
             <li className="mb-2">
-              <NavLink
-                to="paymentsInfo"
-                className={({ isActive }) => `flex items-center text-white ${isActive ? 'text-blue-500' : ''}`}
-              >
+              <NavLink to="paymentsInfo" className={({ isActive }) => `flex items-center text-white ${isActive ? 'text-blue-500' : ''}`}>
                 <CircleDollarSign className="text-white mr-2" />
                 Payments
               </NavLink>
