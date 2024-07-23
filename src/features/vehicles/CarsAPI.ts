@@ -11,12 +11,12 @@ export interface TCar {
   specification:{
      manufacturer: string;
      model: string;
-      year: number;
-      fuel_type: string;
-      engine_capacity: string;
-      transmission: string;
-      seating_capacity: number;
-      color: string;
+     year: number;
+     fuel_type: string;
+     engine_capacity: string;
+     transmission: string;
+     seating_capacity: number;
+     color: string;
       features:string;
      
   }
