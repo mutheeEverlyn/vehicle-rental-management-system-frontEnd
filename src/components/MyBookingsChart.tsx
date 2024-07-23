@@ -1,8 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Chart, ChartData, ChartOptions, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend, BarController } from 'chart.js';
+import React, { useEffect, useState } from 'react';
 import { useGetBookingsQuery, TBookedVehicles } from '../features/vehicles/BookingsApi';
+import { Chart, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+import { format, startOfWeek, parseISO } from 'date-fns';
 
-Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
+// Register the Chart.js components
+Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 interface MyBookingsChartProps {
   user_id: number;
@@ -10,20 +13,30 @@ interface MyBookingsChartProps {
 
 const MyBookingsChart: React.FC<MyBookingsChartProps> = ({ user_id }) => {
   const { data: bookings, error, isLoading, isError } = useGetBookingsQuery();
-  const chartRef = useRef<HTMLCanvasElement>(null);
-  const [chartInstance, setChartInstance] = useState<Chart | null>(null);
-  const [chartData, setChartData] = useState<ChartData<'bar'>>({
-    labels: [],
-    datasets: [],
-  });
+  const [chartData, setChartData] = useState<any>(null);
 
   useEffect(() => {
     if (bookings) {
+      // Filter bookings by user_id and aggregate by week
       const userBookings = bookings.filter((booking: TBookedVehicles) => booking.user_id === user_id);
-      const labels = userBookings.map((booking: TBookedVehicles) => booking.booking_date);
-      const data = userBookings.map((booking: TBookedVehicles) => booking.total_amount);
+      const weeklyBookings: { [weekStart: string]: number } = {};
 
-      setChartData({
+      userBookings.forEach((booking: TBookedVehicles) => {
+        const bookingDate = parseISO(booking.booking_date);
+        const weekStart = format(startOfWeek(bookingDate, { weekStartsOn: 1 }), 'yyyy-MM-dd');
+
+        if (!weeklyBookings[weekStart]) {
+          weeklyBookings[weekStart] = 0;
+        }
+
+        weeklyBookings[weekStart] += booking.total_amount;
+      });
+
+      // Prepare chart data
+      const labels = Object.keys(weeklyBookings);
+      const data = Object.values(weeklyBookings);
+
+      const chartData = {
         labels: labels,
         datasets: [
           {
@@ -34,40 +47,11 @@ const MyBookingsChart: React.FC<MyBookingsChartProps> = ({ user_id }) => {
             borderWidth: 1,
           },
         ],
-      });
+      };
+
+      setChartData(chartData);
     }
   }, [bookings, user_id]);
-
-  useEffect(() => {
-    if (chartInstance) {
-      chartInstance.destroy();
-    }
-
-    if (chartRef.current && chartData.labels && chartData.labels.length > 0) {
-      const newChartInstance = new Chart(chartRef.current, {
-        type: 'bar',
-        data: chartData,
-        options: {
-          responsive: true,
-          scales: {
-            y: {
-              beginAtZero: true,
-            },
-          },
-        } as ChartOptions<'bar'>,
-      });
-
-      setChartInstance(newChartInstance);
-    }
-  }, [chartData]);
-
-  useEffect(() => {
-    return () => {
-      if (chartInstance) {
-        chartInstance.destroy();
-      }
-    };
-  }, [chartInstance]);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error?.data?.message || 'An error occurred'}</div>;
@@ -75,7 +59,7 @@ const MyBookingsChart: React.FC<MyBookingsChartProps> = ({ user_id }) => {
   return (
     <div className="chart-container">
       <h2>Booking Summary</h2>
-      <canvas ref={chartRef}></canvas>
+      {chartData ? <Bar data={chartData} options={{ responsive: true, scales: { y: { beginAtZero: true } } }} /> : <div>No data available</div>}
     </div>
   );
 };
