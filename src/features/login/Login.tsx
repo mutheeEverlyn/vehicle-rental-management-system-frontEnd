@@ -95,6 +95,7 @@ const Login: React.FC = () => {
           <button type="button" className="rounded-md bg-blue-400 p-2">
             <Link to='/'>Go Back</Link>
           </button>
+          <p>not registered? <Link to='/register' className='text-blue-400'>Register</Link></p>
         </form>
       </div>
       <Footer />
