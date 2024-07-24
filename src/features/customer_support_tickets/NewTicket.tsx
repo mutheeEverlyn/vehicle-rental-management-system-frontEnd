@@ -61,6 +61,7 @@ const NewTicket: React.FC = () => {
               id="subject"
               type="text"
               value={subject}
+              placeholder="eg.vehicle/payment"
               onChange={(e) => setSubject(e.target.value)}
               className="w-full p-2 rounded bg-gray-700 text-white"
               required
@@ -81,6 +82,7 @@ const NewTicket: React.FC = () => {
             <textarea
               id="status"
               value={status}
+              placeholder="complaint/compliment"
               onChange={(e) => setStatus(e.target.value)}
               className="w-full p-2 rounded bg-gray-700 text-white"
               required
