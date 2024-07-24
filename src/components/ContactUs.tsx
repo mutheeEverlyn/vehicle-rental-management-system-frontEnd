@@ -38,7 +38,7 @@ const Register: React.FC=() => {
                 },
             }}
             />
-      <div className="m-auto flex flex-col container min-h-[620px]">
+      <div className="mx-auto flex flex-col container min-h-[620px]">
         <h1 className="font-bold text-3xl m-auto">Contact us today for any queries</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5 mx-auto w-2/3 my-10 border-blue-400 rounded-md border-2 p-10">
           <label htmlFor="full_name"> full name</label>
