@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useGetCarsQuery, TCar } from "./CarsAPI";
+import  { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useGetCarsQuery, TCar } from './CarsAPI';
 import { useCreateBookingsMutation, useGetBookingsQuery, TBookedVehicles } from './BookingsApi';
-import { useGetLocationQuery, Tlocation } from "../location/LocationApi";
+import { useGetLocationQuery, Tlocation } from '../location/LocationApi';
 import { Toaster, toast } from 'sonner';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { isSameDay } from 'date-fns';
 
 const BookVehicle = () => {
   const { data: cars, error, isLoading } = useGetCarsQuery();
@@ -108,6 +109,18 @@ const BookVehicle = () => {
     setSelectedCar(null);
   };
 
+  const isDateBooked = (date: Date) => {
+    return bookings?.some((booking: TBookedVehicles) =>
+      selectedCar?.vehicle_id === booking.vehicle_id &&
+      (isSameDay(new Date(booking.booking_date), date) ||
+      isSameDay(new Date(booking.return_date), date))
+    );
+  };
+
+  const dateClassName = (date: Date) => {
+    return isDateBooked(date) ? 'bg-red-400 text-white' : '';
+  };
+
   if (isLoading || isLocationsLoading || isBookingsLoading) return <p>Loading...</p>;
   if (error || locationsError || bookingsError) return <p>Error loading data.</p>;
 
@@ -178,30 +191,23 @@ const BookVehicle = () => {
               <label className="block mb-2 text-sm font-medium text-gray-700">Booking Date</label>
               <DatePicker
                 selected={bookingDate}
-                onChange={(date) => setBookingDate(date)}
+                onChange={(date: Date | null) => setBookingDate(date)}
+                dayClassName={(date: Date) => dateClassName(date)}
                 className="block w-full p-2 border border-gray-300 rounded-md shadow-sm"
-                minDate={new Date()}
               />
             </div>
             <div className="mb-4">
               <label className="block mb-2 text-sm font-medium text-gray-700">Return Date</label>
               <DatePicker
                 selected={returnDate}
-                onChange={(date) => setReturnDate(date)}
+                onChange={(date: Date | null) => setReturnDate(date)}
+                dayClassName={(date: Date) => dateClassName(date)}
                 className="block w-full p-2 border border-gray-300 rounded-md shadow-sm"
-                minDate={bookingDate || new Date()}
               />
             </div>
-            {bookingDate && returnDate && (
-              <p className="mb-4"><strong>Total Amount:</strong> ${Math.ceil((returnDate.getTime() - bookingDate.getTime()) / (1000 * 60 * 60 * 24)) * selectedCar.rental_rate}</p>
-            )}
-            <div className="flex justify-between mt-4">
-              <button onClick={handleCloseDetails} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md">Close</button>
-              {selectedCar.availability === 'available' ? (
-                <button onClick={handleBook} className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Book</button>
-              ) : (
-                <p className="text-red-500">Not Available</p>
-              )}
+            <div className="flex justify-end space-x-4">
+              <button onClick={handleCloseDetails} className="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400 focus:outline-none">Cancel</button>
+              <button onClick={handleBook} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none">Book</button>
             </div>
           </div>
         </div>
