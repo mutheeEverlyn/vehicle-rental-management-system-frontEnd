@@ -28,6 +28,7 @@ import Payment from './features/payments/PaymentSuccess';
 import Profile from './pages/Profile';
 import PaymentsInfo from './components/PaymentsInfo';
 import RouteProtection from './components/RouteProtection';
+import ContactSuccess from './components/ContactSuccess';
 const App: React.FC = () => {
   const cld = new Cloudinary({
     cloud: {
@@ -157,7 +158,11 @@ const App: React.FC = () => {
       element: <ContactUs />,
       errorElement: <Error />,
     },
-   
+    {
+      path: 'contactSucess',
+      element: <ContactSuccess />,
+      errorElement: <Error />,
+    },
   ]);
 
   return(
