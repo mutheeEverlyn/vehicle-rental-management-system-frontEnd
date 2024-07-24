@@ -56,7 +56,10 @@ const Register: React.FC=() => {
         
           <button type="submit" className="rounded-md bg-blue-400 p-2">
             <Link to='/contactSuccess'>submit</Link>
-          </button>    
+          </button> 
+          <button type="submit" className="rounded-md bg-blue-400 p-2">
+            <Link to='/'>Go back</Link>
+          </button>   
         </form>
       </div>
       <Footer />

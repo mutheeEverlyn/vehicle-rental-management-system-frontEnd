@@ -1,4 +1,5 @@
 
+import { Link } from "react-router-dom";
 import CarPng from "../assets/car1.png";
 
 const About = () => {
@@ -22,6 +23,7 @@ const About = () => {
               <p >
                We believe that everyone deserves to experience the pleasure of driving a reliable and comfortable vehicle,regardless of their budget.
               </p>
+             <button className="bg-blue-400 p-2 rounded-md"><Link to='/'>Go back</Link></button> 
             </div>
           </div>
         </div>

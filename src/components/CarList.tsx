@@ -51,10 +51,11 @@ const CarList = () => {
             ))}
           </div>
         </div>
-        <div className="grid place-items-center mt-8">
+        <div className=" place-items-center mt-8 flex gap-4 items-center m-auto w-96">
           <button  className="bg-blue-400 p-2  hover:bg-primary/80 transition duration-500  rounded-md">
            <Link to='/register'>Rent Yours Today</Link> 
           </button>
+          <button className="bg-blue-400 p-2 rounded-md"><Link to='/'>Go back</Link></button> 
         </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import Footer from "./Footer"
+import Navbar from "./Navbar";
 const serviceData = [
     {
       name: " Full Insurance",
@@ -23,6 +24,8 @@ const serviceData = [
   ];
 const MoreServices = () => {
   return (
+    <div>
+      <Navbar/>
     <div className=" py-14 sm:min-h-[600px] sm:grid sm:place-items-center services" >
     <div className="container">
       <div className="pb-12">
@@ -46,6 +49,7 @@ const MoreServices = () => {
       </div>
     </div>
     <Footer/>
+  </div>
   </div>
   )
 }
