@@ -55,7 +55,7 @@ const Register: React.FC=() => {
           <textarea  className="border-2 border-black rounded-md p-2 w-30 h-20"></textarea>
         
           <button type="submit" className="rounded-md bg-blue-400 p-2">
-            <Link to='contactSuccess'>submit</Link>
+            <Link to='/contactSuccess'>submit</Link>
           </button>    
         </form>
       </div>
