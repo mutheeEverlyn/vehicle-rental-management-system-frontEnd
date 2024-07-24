@@ -159,7 +159,7 @@ const App: React.FC = () => {
       errorElement: <Error />,
     },
     {
-      path: 'contactSucess',
+      path: 'contactSuccess',
       element: <ContactSuccess />,
       errorElement: <Error />,
     },
